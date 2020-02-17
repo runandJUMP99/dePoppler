@@ -1,0 +1,35 @@
+<%- include('partials/header.ejs') %>
+
+    <ul class="items-section">
+        <h1 class="status-header">closet</h1>
+
+        <% foundItem.forEach(function(item) { %>
+            <% if (item.status == "closet") { %>
+            <form action="/change" method="post">
+                <div class="item">
+                    <div class="item-img-container">
+                        img<img src="" alt="">
+                    </div>
+                    <div>
+                        <label class="item-name-label" for="itemName">item name |</label>
+                        <li class="item-name" name="itemName"> <%= item.name %> </li>
+                    </div> 
+                    <div class="move-to-section">
+                        <label class="status-label">move to: </label>
+                        <div class="move-to-buttons">
+                            <label>photo'd</label>
+                            <input type="checkbox" name="movePhotod" value="photod" onChange="submit()">
+                            <label>list'd</label>
+                            <input type="checkbox" name="moveListed" value="listed" onChange="submit()">
+                            <label>delete</label>
+                            <input type="checkbox" name="moveDelete" value="delete" onChange="submit()">
+                            <input type="hidden" name="moveId" value="<%= item.id %>">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        <% } %>
+        <% }) %>
+    </ul>
+
+<%- include('partials/footer.ejs'); %>
