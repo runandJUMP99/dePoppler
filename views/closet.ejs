@@ -1,5 +1,12 @@
 <%- include('partials/header.ejs') %>
 
+    <div class="modal__upload-img">
+        <form action="/" method="post">
+            <h1 class="newEntryForm__header">upload image</h1>
+            <button class="newEntryForm__button">browse</button>
+            <div class="modal__new-img"></div>
+        </form>
+    </div>
     <ul class="items-section">
         <h1 class="status-header">closet</h1>
 
@@ -31,5 +38,8 @@
         <% } %>
         <% }) %>
     </ul>
+    <div class="upload-section">
+        <button class="upload-button">add new item</button>
+    </div>
 
 <%- include('partials/footer.ejs'); %>

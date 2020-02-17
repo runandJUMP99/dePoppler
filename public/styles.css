@@ -95,6 +95,11 @@ footer {
   width: 4rem;
 }
 
+.item-img-container:hover {
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
 .item-name-label {
   color: #ccc;
   font-size: 0.8rem;
@@ -120,7 +125,61 @@ footer {
   color: #e4a3d4;
 }
 
+.upload-section {
+  padding: 2rem;
+  text-align: center;
+}
 
+.upload-button {
+  background: #fce2db;
+  border-radius: 1rem;
+  color: #c295d8;
+  font-weight: bold;
+}
+
+.upload-button:hover,
+.upload-button:active {
+  background: #c295d8;
+  color: #fce2db;
+}
+
+.backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  height: 100vw;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.modal__new-item {
+  background: white;
+  border: solid 1px #ccc;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  display: none;
+  left: 30%;
+  padding: 1rem;
+  position: fixed;
+  text-align: center;
+  top: 20%;
+}
+
+.modal__upload-img {
+  background: white;
+  border: solid 1px #ccc;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  display: none;
+  left: 30%;
+  padding: 1rem;
+  position: fixed;
+  text-align: center;
+  top: 20%;
+}
+
+.open {
+  display: block !important;
+}
 
 
 /* 
