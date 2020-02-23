@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const express = require ("express");
+const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -7,9 +8,12 @@ const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/"
+}));
 
 mongoose.connect("mongodb://localhost:27017/dePopplerDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
-mongoose.set("useCreateIndex", true);
 
 const itemSchema = new mongoose.Schema({
     name: String,
@@ -23,12 +27,16 @@ app.get("/", function(req, res) {
 });
 
 app.get("/closet", function(req, res) {
-    Item.find({"status": "closet"}, function(err, foundItem) {
+    const selectedImgContainer = req.body.selectedImgContainer;
+
+    console.log(selectedImgContainer);
+
+    Item.find({"status": "closet"}, function(err, foundItems) {
         if (err) {
             console.log(err);
         }
         else {
-            res.render("closet", {foundItem: foundItem});
+            res.render("closet", {foundItems: foundItems});
         }
     });
 });
@@ -131,6 +139,21 @@ app.post("/change", function(req, res) {
 
         res.redirect("/");
     } 
+});
+
+app.post("/upload", function(req, res) {
+    const file = req.files.file;
+    const uploadPath = __dirname + "/public/uploads/" + file.name;
+
+    file.mv(uploadPath, function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("File uploaded to" + uploadPath);
+        }
+    });
+
+    res.redirect("/closet");
 });
 
 app.listen(3000, function() {

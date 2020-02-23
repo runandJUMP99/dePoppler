@@ -1,21 +1,24 @@
 <%- include('partials/header.ejs') %>
 
     <div class="modal__upload-img">
-        <form action="/" method="post">
-            <h1 class="newEntryForm__header">upload image</h1>
-            <button class="newEntryForm__button">browse</button>
-            <div class="modal__new-img"></div>
+        <h1 class="newEntryForm__header">upload image</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file"name="file">
+            <input type="submit" value="upload"></input>
         </form>
     </div>
+
     <ul class="items-section">
         <h1 class="status-header">closet</h1>
+        
+        <% foundItems.forEach(function(item) { %>
+        <% if (item.status == "closet") { %>
 
-        <% foundItem.forEach(function(item) { %>
-            <% if (item.status == "closet") { %>
             <form action="/change" method="post">
                 <div class="item">
                     <div class="item-img-container">
-                        img<img src="" alt="">
+                        <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
+                        <img src="" alt="">
                     </div>
                     <div>
                         <label class="item-name-label" for="itemName">item name |</label>
@@ -35,8 +38,10 @@
                     </div>
                 </div>
             </form>
+
         <% } %>
         <% }) %>
+
     </ul>
     <div class="upload-section">
         <button class="upload-button">add new item</button>
