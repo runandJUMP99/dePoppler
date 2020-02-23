@@ -3,6 +3,15 @@
     <div class="modal__upload-img">
         <h1 class="newEntryForm__header">upload image</h1>
         <form action="/upload" method="post" enctype="multipart/form-data">
+            <select name="itemSelected">
+
+                <% foundItems.forEach(function(item) { %>
+                    <% if (item.status == "closet") { %>
+                        <option value="<%= item._id %>"> <%= item.name %> </option>
+                    <% } %>
+                <% }) %>
+
+            </select>   
             <input type="file"name="file">
             <input type="submit" value="upload"></input>
         </form>
@@ -18,7 +27,7 @@
                 <div class="item">
                     <div class="item-img-container">
                         <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                        <img src="" alt="">
+                        <img src="<%= item.img %>" alt="">
                     </div>
                     <div>
                         <label class="item-name-label" for="itemName">item name |</label>

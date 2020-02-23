@@ -17,7 +17,8 @@ mongoose.connect("mongodb://localhost:27017/dePopplerDB", {useNewUrlParser: true
 
 const itemSchema = new mongoose.Schema({
     name: String,
-    status: String
+    status: String,
+    img: String
 });
 
 const Item = new mongoose.model("Item", itemSchema);
@@ -27,10 +28,6 @@ app.get("/", function(req, res) {
 });
 
 app.get("/closet", function(req, res) {
-    const selectedImgContainer = req.body.selectedImgContainer;
-
-    console.log(selectedImgContainer);
-
     Item.find({"status": "closet"}, function(err, foundItems) {
         if (err) {
             console.log(err);
@@ -144,6 +141,7 @@ app.post("/change", function(req, res) {
 app.post("/upload", function(req, res) {
     const file = req.files.file;
     const uploadPath = __dirname + "/public/uploads/" + file.name;
+    const itemSelected = req.body.itemSelected;
 
     file.mv(uploadPath, function(err) {
         if (err) {
@@ -152,6 +150,19 @@ app.post("/upload", function(req, res) {
             console.log("File uploaded to" + uploadPath);
         }
     });
+
+    Item.findOneAndUpdate(
+        {_id: itemSelected}, 
+        {img: "../uploads/" + file.name}, 
+        function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("updated img");
+            }
+    }); 
+
+    console.log(itemSelected);
 
     res.redirect("/closet");
 });
