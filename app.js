@@ -23,6 +23,14 @@ const itemSchema = new mongoose.Schema({
 
 const Item = new mongoose.model("Item", itemSchema);
 
+const userSchema = new mongoose.Schema({
+    email: String,
+    password: String,
+    items: [itemSchema]
+});
+
+const User = new mongoose.model("User", userSchema);
+
 app.get("/", function(req, res) {
     res.render("home");
 });
@@ -60,8 +68,8 @@ app.get("/listed", function(req, res) {
     });
 });
 
-app.get("/signup", function(req, res) {
-    res.render("signup");
+app.get("/register", function(req, res) {
+    res.render("register");
 });
 
 app.post("/", function(req, res) {
@@ -136,6 +144,18 @@ app.post("/change", function(req, res) {
 
         res.redirect("/");
     } 
+});
+
+app.post("/register", function(req, res) {
+    const user = new User({
+        email: req.body.email,
+        password: req.body.password,
+        items: []
+    });
+
+    user.save();
+
+    res.redirect("/");
 });
 
 app.post("/upload", function(req, res) {
@@ -252,3 +272,118 @@ app.listen(3000, function() {
 //         return cb(err, user);
 //     });
 // }));
+
+// app.get("/", function(req, res) {
+//     res.render("home");
+// });
+
+// app.get("/auth/facebook",
+//     passport.authenticate("facebook", {scope: ["profile"]})
+// );
+
+// app.get("/auth/facebook/secrets",
+//     passport.authenticate("facebook", {failureRedirect: "/login"}),
+//     function(req, res) {
+//         res.redirect("/secrets");
+// });
+
+// app.get("/auth/google",
+//     passport.authenticate("google", {scope: ["profile"]})
+// );
+
+// app.get("/auth/google/secrets",
+//     passport.authenticate("google", {
+//         successRedirect: "/secrets",
+//         failureRedirect: "/login"
+//     })
+// );
+
+// app.get("/login", function(req, res) {
+//     res.render("login");
+// });
+
+// app.get("/logout", function(req, res) {
+//     req.logout();
+//     res.redirect("/");
+// });
+
+// app.get("/register", function(req, res) {
+//     res.render("register");
+// });
+
+// app.get("/secrets", function(req, res) {
+//     User.find({"secret": {$ne: null}}, function(err, foundUsers) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+//             if (foundUsers) {
+//                 res.render("secrets", {usersWithSecrets: foundUsers})
+//             }
+//         }
+//     });
+// });
+
+// app.get("/submit", function(req, res) {
+//     if (req.isAuthenticated()) {
+//         res.render("submit");
+//     }
+//     else {
+//         res.redirect("/login");
+//     }
+// });
+
+// app.post("/login", function(req, res) {
+//     const user = new User({
+//         username: req.body.username,
+//         password: req.body.password
+//     });
+
+//     req.login(user, function(err) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+//             passport.authenticate("local")(req, res, function() {
+//                 res.redirect("/secrets");
+//             });
+//         }
+//     });
+// });
+
+// app.post("/register", function(req, res) {
+    
+//     User.register({username: req.body.username}, req.body.password, function(err, user) {
+//         if (err) {
+//             console.log(err);
+//             res.redirect("/register");
+//         }
+//         else {
+//             passport.authenticate("local")(req, res, function() {
+//                 res.redirect("/secrets");
+//             });
+//         }
+//     });
+// });
+
+// app.post("/submit", function(req, res) {
+//     const submittedSecret = req.body.secret
+
+//     User.findById(req.user.id, function(err, foundUser) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+//             if (foundUser) {
+//                 foundUser.secret = submittedSecret;
+//                 foundUser.save(function() {
+//                     res.redirect("/secrets");
+//                 });
+//             }
+//         }
+//     });
+// });
+
+// app.listen(3000, function() {
+//     console.log("Server running on port 3000");
+// });
