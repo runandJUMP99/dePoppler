@@ -1,3 +1,14 @@
+let i = 0;
+
+$(".carousel-control-next").on("click", function() {
+    i++;
+
+    if (i === 4) {
+        $(".intro-modal").removeClass("open");
+        $(".intro-backdrop").removeClass("open");
+    }
+});
+
 $(".item-img-container").on("click", function() {
     $(".backdrop").addClass("open");
     $(".modal__upload-img").addClass("open");

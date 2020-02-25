@@ -149,51 +149,6 @@ footer {
   color: #fce2db;
 }
 
-/* MODALS */
-
-.backdrop {
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  height: 100vw;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-}
-
-.img-slide {
-  background: #ccc;
-  height: 20rem;
-}
-
-.modal__new-item {
-  background: white;
-  border: solid 1px #ccc;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-  display: none;
-  left: 30%;
-  padding: 1rem;
-  position: fixed;
-  text-align: center;
-  top: 20%;
-}
-
-.modal__upload-img {
-  background: white;
-  border: solid 1px #ccc;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-  display: none;
-  left: 30%;
-  padding: 1rem;
-  position: fixed;
-  text-align: center;
-  top: 20%;
-}
-
-.open {
-  display: block !important;
-}
-
 
 /* 
 !!COLOR PALLETE!!
