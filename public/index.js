@@ -3,10 +3,26 @@ let i = 0;
 $(".intro-modal-next").on("click", function() {
     i++;
 
+    console.log(i);
+
     if (i === 4) {
         $(".intro-modal").removeClass("open");
         $(".intro-backdrop").removeClass("open");
     }
+});
+
+$(".intro-modal-prev").on("click", function() {
+    i--;
+
+    console.log(i);
+
+    if (i < 0) {
+        i = 0;
+    }
+});
+
+$(".carousel").carousel({
+    interval: false
 });
 
 $(".item-img-container").on("click", function() {

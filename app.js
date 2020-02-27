@@ -1,7 +1,11 @@
 const bodyParser = require("body-parser");
 const express = require ("express");
+const findOrCreate = require("mongoose-findorcreate");
 const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const passportLocalMongoose = require ("passport-local-mongoose");
+const session = require("express-session"); 
 
 const app = express();
 
@@ -13,7 +17,18 @@ app.use(fileUpload({
     tempFileDir: "/tmp/"
 }));
 
+app.use(session({
+    secret: "Our little secret.",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 mongoose.connect("mongodb://localhost:27017/dePopplerDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+mongoose.set("useCreateIndex", true);
+
 
 const itemSchema = new mongoose.Schema({
     name: String,
@@ -21,15 +36,32 @@ const itemSchema = new mongoose.Schema({
     img: String
 });
 
-const Item = new mongoose.model("Item", itemSchema);
-
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
+    // socialId: String,
+    secret: String,
     items: [itemSchema]
 });
 
+userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
 const User = new mongoose.model("User", userSchema);
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+const Item = new mongoose.model("Item", itemSchema);
 
 app.get("/", function(req, res) {
     res.render("home");
@@ -147,15 +179,18 @@ app.post("/change", function(req, res) {
 });
 
 app.post("/register", function(req, res) {
-    const user = new User({
-        email: req.body.email,
-        password: req.body.password,
-        items: []
+
+    User.register({username: req.body.email}, req.body.password, function(err, user) {
+        if (err) {
+            console.log(err);
+            res.redirect("/register");
+        }
+        else {
+            passport.authenticate("local")(req, res, function() {
+                res.redirect("/");
+            });
+        }
     });
-
-    user.save();
-
-    res.redirect("/");
 });
 
 app.post("/upload", function(req, res) {
