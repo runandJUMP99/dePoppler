@@ -12,7 +12,7 @@
     background: white;
     border-radius: 2rem;
     display: none;
-    height: 22rem;
+    height: 27rem;
     left: 50%;
     margin: auto; 
     position: fixed;
@@ -22,9 +22,31 @@
 
 .intro-modal-slides {
     margin: auto;
-    top: 50%;
-    transform: translate(0, -50%);
+    top: 10%;
     width: 80%;
+}
+
+.intro-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 4rem;
+    position: relative;
+    top: 12%;
+}
+
+.intro-modal-button {
+    background: #fce2db;
+    border: 5px solid #e4a3d4;
+    border-radius: 2rem; 
+    color: #c295d8;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.4rem 1.2rem;
+}
+
+.intro-modal-button:hover {
+    color: white;
+    text-decoration: none;
 }
 
 .backdrop {

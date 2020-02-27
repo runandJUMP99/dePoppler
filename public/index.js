@@ -1,6 +1,6 @@
 let i = 0;
 
-$(".carousel-control-next").on("click", function() {
+$(".intro-modal-next").on("click", function() {
     i++;
 
     if (i === 4) {

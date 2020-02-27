@@ -27,23 +27,27 @@ body {
   text-align: center;
 }
 
+/* FOOTER SECTION */
+
 footer {
   background: #e4a3d4;
   color: white;
 }
 
 .footer__nav-buttons {
-  background: #e4a3d4;
-  border: solid 2px #fce2db;
-  color: #fce2db;
+  background: white;
+  border: solid 5px #fce2db;
+  border-radius: 2rem;
+  color: #e4a3d4;
   font-weight: bold;
   padding: 0.5rem 1rem;
 }
 
 .footer__nav-buttons:hover,
 .footer__nav-buttons:active {
-  text-decoration: none;
+  background: #e4a3d4;
   color: white;
+  text-decoration: none;
 }
 
 .footer__ul {
