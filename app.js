@@ -40,7 +40,6 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     // socialId: String,
-    secret: String,
     items: [itemSchema]
 });
 
@@ -51,29 +50,29 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 const Item = new mongoose.model("Item", itemSchema);
 
 app.get("/", function(req, res) {
-    res.render("home");
+    if (req.isAuthenticated()) {
+        res.render("home");
+    } else {
+        res.redirect("/register");
+    }    
 });
 
 app.get("/closet", function(req, res) {
-    Item.find({"status": "closet"}, function(err, foundItems) {
+    User.findById(req.user.id, function(err, foundUser) {
         if (err) {
             console.log(err);
-        }
-        else {
-            res.render("closet", {foundItems: foundItems});
+        } else {
+            if (foundUser) {;
+                const foundItems = foundUser.items;
+
+                res.render("closet", {foundItems: foundItems});
+            }
         }
     });
 });
@@ -100,6 +99,15 @@ app.get("/listed", function(req, res) {
     });
 });
 
+app.get("/login", function(req, res) {
+    res.render("login");
+});
+
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/login");
+});
+
 app.get("/register", function(req, res) {
     res.render("register");
 });
@@ -112,9 +120,21 @@ app.post("/", function(req, res) {
             name: newItem,
             status: "closet"
         });
-    
-        item.save();
-        res.redirect("/closet");
+
+        User.findById(req.user.id, function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                if (foundUser) {
+                    foundUser.items.push(item);
+                    foundUser.save(function() {
+                        res.redirect("/closet");
+                    });
+                }
+            }
+        });
+
     } else {
         res.redirect("/");
     }
@@ -139,6 +159,19 @@ app.post("/change", function(req, res) {
         }); 
 
         res.redirect("/closet");
+        
+        User.findById(req.user.id, function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundUser) {;
+                    const foundItems = foundUser.items;
+    
+                    res.render("closet", {foundItems: foundItems});
+                }
+            }
+        });
+
     } else if (movePhotod == "photod") {
         Item.findOneAndUpdate(
             {_id: moveId}, 
@@ -178,9 +211,27 @@ app.post("/change", function(req, res) {
     } 
 });
 
-app.post("/register", function(req, res) {
+app.post("/login", function(req, res) {
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
 
-    User.register({username: req.body.email}, req.body.password, function(err, user) {
+    req.login(user, function(err) {
+        if (err) {
+            console.log(err);
+            res.redirect("/login");
+        }
+        else {
+            passport.authenticate("local")(req, res, function() {
+                res.redirect("/");
+            });
+        }
+    });
+});
+
+app.post("/register", function(req, res) {
+    User.register({username: req.body.username}, req.body.password, function(err, user) {
         if (err) {
             console.log(err);
             res.redirect("/register");

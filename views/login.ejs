@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
-    <form class="form-signin">
+    <form action="/login" class="form-signin" method="post">
         <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">please sign in</h1>
         <label for="inputEmail" class="sr-only">email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="email address" required autofocus>
+        <input name="username" type="email" id="inputEmail" class="form-control" placeholder="email address" required autofocus>
         <label for="inputPassword" class="sr-only">password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="password" required>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="password" required>
         <div class="checkbox mb-3">
           <label>
             <input type="checkbox" value="remember-me"> remember me
