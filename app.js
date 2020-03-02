@@ -29,18 +29,15 @@ app.use(passport.session());
 mongoose.connect("mongodb://localhost:27017/dePopplerDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 mongoose.set("useCreateIndex", true);
 
-
-const itemSchema = new mongoose.Schema({
-    name: String,
-    status: String,
-    img: String
-});
-
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     // socialId: String,
-    items: [itemSchema]
+    items: [{
+        name: String,
+        status: String,
+        img: String
+    }]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -53,11 +50,10 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const Item = new mongoose.model("Item", itemSchema);
-
 app.get("/", function(req, res) {
     if (req.isAuthenticated()) {
-        res.render("home");
+        res.redirect("/closet");
+        // res.render("home");
     } else {
         res.redirect("/register");
     }    
@@ -68,7 +64,7 @@ app.get("/closet", function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            if (foundUser) {;
+            if (foundUser) {
                 const foundItems = foundUser.items;
 
                 res.render("closet", {foundItems: foundItems});
@@ -78,23 +74,29 @@ app.get("/closet", function(req, res) {
 });
 
 app.get("/photod", function(req, res) {
-    Item.find({"status": "photod"}, function(err, foundItem) {
+    User.findById(req.user.id, function(err, foundUser) {
         if (err) {
             console.log(err);
-        }
-        else {
-            res.render("photod", {foundItem: foundItem});
+        } else {
+            if (foundUser) {
+                const foundItems = foundUser.items;
+
+                res.render("photod", {foundItems: foundItems});
+            }
         }
     });
 });
 
 app.get("/listed", function(req, res) {
-    Item.find({"status": "listed"}, function(err, foundItem) {
+    User.findById(req.user.id, function(err, foundUser) {
         if (err) {
             console.log(err);
-        }
-        else {
-            res.render("listed", {foundItem: foundItem});
+        } else {
+            if (foundUser) {
+                const foundItems = foundUser.items;
+
+                res.render("listed", {foundItems: foundItems});
+            }
         }
     });
 });
@@ -116,10 +118,10 @@ app.post("/", function(req, res) {
     const newItem = req.body.item;
 
     if (newItem) {
-        const item = new Item({
+        const item = {
             name: newItem,
             status: "closet"
-        });
+        };
 
         User.findById(req.user.id, function(err, foundUser) {
             if (err) {
@@ -128,7 +130,7 @@ app.post("/", function(req, res) {
             else {
                 if (foundUser) {
                     foundUser.items.push(item);
-                    foundUser.save(function() {
+                    foundUser.save(()    => {
                         res.redirect("/closet");
                     });
                 }
@@ -147,67 +149,50 @@ app.post("/change", function(req, res) {
     const moveId = req.body.moveId;
 
     if (moveCloset == "closet") {
-        Item.findOneAndUpdate(
-            {_id: moveId}, 
-            {status: moveCloset}, 
-            function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("updated status");
-                }
-        }); 
-
-        res.redirect("/closet");
-        
-        User.findById(req.user.id, function(err, foundUser) {
+        User.updateOne(
+            {"items._id": moveId}, 
+            {"$set": {"items.$.status": "closet"}},
+            function(err, foundUser) {
             if (err) {
                 console.log(err);
             } else {
-                if (foundUser) {;
-                    const foundItems = foundUser.items;
-    
-                    res.render("closet", {foundItems: foundItems});
-                }
+                console.log("updated status--photod route");
             }
         });
 
+        res.redirect("/closet");
     } else if (movePhotod == "photod") {
-        Item.findOneAndUpdate(
-            {_id: moveId}, 
-            {status: movePhotod}, 
-            function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("updated status");
-                }
-        }); 
+        User.updateOne(
+            {"items._id": moveId}, 
+            {"$set": {"items.$.status": "photod"}},
+            function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("updated status--photod route");
+            }
+        });
 
         res.redirect("/photod");
     } else if (moveListed == "listed") {
-        Item.findOneAndUpdate(
-            {_id: moveId}, 
-            {status: moveListed}, 
-            function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("updated status");
-                }
-        }); 
-
-        res.redirect("/listed");
-    } else {
-        Item.findByIdAndRemove(moveId, function(err) {
+        User.updateOne(
+            {"items._id": moveId}, 
+            {"$set": {"items.$.status": "listed"}},
+            function(err, foundUser) {
             if (err) {
                 console.log(err);
-            }   else {
-                console.log("Removed Item By Id");
+            } else {
+                console.log("updated status--lised route");
             }
         });
 
-        res.redirect("/");
+        res.redirect("/listed");
+    } else {
+        User.findByIdAndUpdate(req.user.id, {$pull: {items: {_id: moveId}}}, function(err) {
+            if (!err) {
+              res.redirect("/closet");
+            }
+        });
     } 
 });
 
