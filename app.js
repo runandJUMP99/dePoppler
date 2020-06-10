@@ -39,7 +39,8 @@ const userSchema = new mongoose.Schema({
     items: [{
         name: String,
         status: String,
-        img: String
+        img: String,
+        price: String
     }]
 });
 
@@ -171,10 +172,12 @@ app.get("/register", function(req, res) {
 
 app.post("/", function(req, res) {
     const newItem = req.body.item;
+    const price = req.body.price;
 
     if (newItem) {
         const item = {
             name: newItem,
+            price: price,
             status: "closet"
         };
 
@@ -185,7 +188,7 @@ app.post("/", function(req, res) {
             else {
                 if (foundUser) {
                     foundUser.items.push(item);
-                    foundUser.save(()    => {
+                    foundUser.save(() => {
                         res.redirect("/closet");
                     });
                 }
