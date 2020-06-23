@@ -1,0 +1,90 @@
+h4 {
+    font-weight: normal;
+    margin: 1rem 0;
+}
+
+.main-nav ul,
+.main-nav__fixed ul {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 0;
+    padding: 1rem;
+}
+
+.main-nav a,
+.main-nav__fixed a {
+    color: white;
+    margin: 1rem 2rem;
+}
+
+.main-nav a:hover,
+.main-nav__fixed a:hover {
+    color: #e4a3d4;
+    text-decoration: none;
+}
+
+.main-nav__fixed {
+    box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    transform: translateY(-4rem);
+    transition: all 0.5s ease-in-out;
+    width: 100%;
+    z-index: 10;
+}
+
+.main-nav__fixed__show {
+    transform: translateY(0);
+}
+
+.home__jumbotron {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, transparent), 
+    url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/store-984393_1920.jpg?alt=media&token=b794ab80-3a47-4297-8f66-9f47e478fd8d") center/cover no-repeat border-box, #e4a3d4;
+    padding: 4rem 0;
+    width: 100%;
+}
+
+.jumbotron__text {
+    color: white;
+    margin: auto;
+    text-align: center;
+    width: 40%;
+}
+
+.jumbotron__text button {
+    background: #e4a3d4;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+}
+
+.jumbotron__text button:hover {
+    background: white;
+    color: #e4a3d4;
+}
+
+.intro {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.intro img {
+    box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.5);
+    width: 40%;
+}
+
+.intro__text {
+    text-align: right;
+    width: 40%;
+}
+
+.intro__text h2 {
+    color: #e4a3d4;
+    font-weight: bold;
+}

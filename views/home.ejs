@@ -1,12 +1,43 @@
 <%- include("partials/header.ejs") %>
 
-<div class="newEntryForm">
+<nav class="main-nav__fixed">
+  <ul>
+    <li>
+      <a href="/">Log In</a>
+    </li>
+    <li>
+      <a class="cta-buttom" href="/">Get Started</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="home__jumbotron">
+  <div class="jumbotron__text">
+    <h1>Need help organizing your inventory?</h1>
+    <h4>dePoppler can help you keep track of every item that goes through your store</h4>
+    <button>Get Started</button>
+  </div>
+</div>
+
+<div class="intro">
+  <img src="https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/clothing-store-984396_1920.jpg?alt=media&token=be55fe6b-0f22-46d5-b60b-ea76961bd5bf" alt="Intro Image - Closet">
+  <div class="intro__text">
+    <h2>Never lose track of items again!</h2>
+    <h4>dePoppler is <em>so</em> easy to learn. Easily track each item from purchased to delivered.</h4>
+  </div>
+</div>
+    
+<%- include("partials/footer.ejs") %>
+
+
+
+
+
+<!-- <div class="newEntryForm">
   <form action="/" method="post">
       <h1 class="newEntryForm__header">enter new item</h1>
       <input type="text" name="item" placeholder="new item" autocomplete="off">
       <input type="text" name="price" placeholder="price" autocomplete="off">
       <button class="newEntryForm__button">add to closet</button>
   </form>
-</div>
-    
-<%- include("partials/footer.ejs") %>
+</div> -->

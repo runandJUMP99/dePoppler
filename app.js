@@ -89,11 +89,7 @@ function(accessToken, refreshToken, profile, cb) {
 }));
 
 app.get("/", function(req, res) {
-    if (req.isAuthenticated()) {
-        res.render("home");
-    } else {
-        res.redirect("/register");
-    }    
+    res.render("home");
 });
 
 app.get("/auth/google",
