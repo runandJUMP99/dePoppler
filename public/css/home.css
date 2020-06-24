@@ -1,6 +1,6 @@
 h4 {
     font-weight: normal;
-    margin: 1rem 0;
+    margin: 2rem 0;
 }
 
 .main-nav ul,
@@ -40,7 +40,7 @@ h4 {
 .home__jumbotron {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, transparent), 
     url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/store-984393_1920.jpg?alt=media&token=b794ab80-3a47-4297-8f66-9f47e478fd8d") center/cover no-repeat border-box, #e4a3d4;
-    padding: 4rem 0;
+    padding: 8rem 0;
     width: 100%;
 }
 
@@ -51,18 +51,19 @@ h4 {
     width: 40%;
 }
 
-.jumbotron__text button {
+.jumbotron__text a {
     background: #e4a3d4;
     border: none;
-    color: white;
     border-radius: 8px;
+    color: white;
     font-size: 1.2rem;
     font-weight: bold;
-    margin: 1.5rem 0;
     padding: 0.5rem 1rem;
+    text-decoration: none;
 }
 
-.jumbotron__text button:hover {
+.jumbotron__text a:hover,
+.jumbotron__text a:active {
     background: white;
     color: #e4a3d4;
 }
@@ -70,7 +71,7 @@ h4 {
 .intro {
     display: flex;
     justify-content: space-around;
-    margin: 2rem 0;
+    margin: 5rem 0;
     width: 100%;
 }
 

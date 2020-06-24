@@ -29,7 +29,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/dePopplerDB", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+mongoose.connect(`mongodb+srv://runandJUMP:${process.env.PASSWORD}@depoppler-xznul.mongodb.net/dePoppler?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
@@ -83,7 +83,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/home"
 },
 function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({socialId: profile.id}, function(err, user) {
+    User.findOrCreate({socialId: profile.id, username: profile.id}, function(err, user) {
         return cb(err, user);
     });
 }));
@@ -98,7 +98,7 @@ app.get("/auth/google",
 
 app.get("/auth/google/home",
     passport.authenticate("google", {
-        successRedirect: "/",
+        successRedirect: "/welcome",
         failureRedirect: "/login"
     })
 );
@@ -117,19 +117,6 @@ app.get("/closet", function(req, res) {
     });
 });
 
-app.get("/photod", function(req, res) {
-    User.findById(req.user.id, function(err, foundUser) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                const foundItems = foundUser.items;
-
-                res.render("photod", {foundItems: foundItems});
-            }
-        }
-    });
-});
 
 app.get("/listed", function(req, res) {
     User.findById(req.user.id, function(err, foundUser) {
@@ -138,7 +125,7 @@ app.get("/listed", function(req, res) {
         } else {
             if (foundUser) {
                 const foundItems = foundUser.items;
-
+                
                 res.render("listed", {foundItems: foundItems});
             }
         }
@@ -166,17 +153,35 @@ app.get("/register", function(req, res) {
     res.render("register");
 });
 
+app.get("/photod", function(req, res) {
+    User.findById(req.user.id, function(err, foundUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                const foundItems = foundUser.items;
+
+                res.render("photod", {foundItems: foundItems});
+            }
+        }
+    });
+});
+
+app.get("/welcome", function(req, res) {
+    res.render("welcome");
+});
+
 app.post("/", function(req, res) {
     const newItem = req.body.item;
     const price = req.body.price;
-
+    
     if (newItem) {
         const item = {
             name: newItem,
             price: price,
             status: "closet"
         };
-
+        
         User.findById(req.user.id, function(err, foundUser) {
             if (err) {
                 console.log(err);
@@ -263,7 +268,7 @@ app.post("/login", function(req, res) {
         }
         else {
             passport.authenticate("local")(req, res, function() {
-                res.redirect("/");
+                res.redirect("/welcome");
             });
         }
     });
@@ -312,25 +317,6 @@ app.post("/upload", function(req, res) {
 });
 
 
-
 app.listen(3000, function() {
     console.log("Server running on port 3000");
 });
-
-// app.post("/submit", function(req, res) {
-//     const submittedSecret = req.body.secret
-
-//     User.findById(req.user.id, function(err, foundUser) {
-//         if (err) {
-//             console.log(err);
-//         }
-//         else {
-//             if (foundUser) {
-//                 foundUser.secret = submittedSecret;
-//                 foundUser.save(function() {
-//                     res.redirect("/secrets");
-//                 });
-//             }
-//         }
-//     });
-// });
