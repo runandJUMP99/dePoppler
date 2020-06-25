@@ -24,5 +24,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Steven Velez",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "8.12.0"
+  }
 }
