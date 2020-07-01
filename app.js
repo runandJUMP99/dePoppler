@@ -98,7 +98,7 @@ app.get("/auth/google",
 
 app.get("/auth/google/home",
     passport.authenticate("google", {
-        successRedirect: "/welcome",
+        successRedirect: "/dashboard",
         failureRedirect: "/login"
     })
 );
@@ -167,8 +167,18 @@ app.get("/photod", function(req, res) {
     });
 });
 
-app.get("/welcome", function(req, res) {
-    res.render("welcome");
+app.get("/dashboard", function(req, res) {
+    User.findById(req.user.id, function(err, foundUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                const foundItems = foundUser.items;
+
+                res.render("dashboard", {foundItems: foundItems});
+            }
+        }
+    });
 });
 
 app.post("/", function(req, res) {
@@ -268,7 +278,7 @@ app.post("/login", function(req, res) {
         }
         else {
             passport.authenticate("local")(req, res, function() {
-                res.redirect("/welcome");
+                res.redirect("/dashboard");
             });
         }
     });

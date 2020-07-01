@@ -3,28 +3,32 @@ h4 {
     margin: 2rem 0;
 }
 
+/* NAVIGATION */
+
 .main-nav ul,
 .main-nav__fixed ul {
+    align-items: center;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-around;
     list-style: none;
     margin: 0;
     padding: 1rem;
 }
 
 .main-nav a,
-.main-nav__fixed a {
-    color: white;
+.main-nav__fixed__link {
+    color: black;
     margin: 1rem 2rem;
 }
 
 .main-nav a:hover,
-.main-nav__fixed a:hover {
+.main-nav__fixed__link:hover {
     color: #e4a3d4;
     text-decoration: none;
 }
 
 .main-nav__fixed {
+    background: #fce2db;
     box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.5);
     position: fixed;
     transform: translateY(-4rem);
@@ -37,6 +41,26 @@ h4 {
     transform: translateY(0);
 }
 
+.cta-button {
+    background: #e4a3d4;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}
+
+.cta-button:hover,
+.cta-button:active {
+    background: white;
+    color: #e4a3d4;
+    text-decoration: none;
+}
+
+/* JUMBOTRON */
+
 .home__jumbotron {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, transparent), 
     url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/store-984393_1920.jpg?alt=media&token=b794ab80-3a47-4297-8f66-9f47e478fd8d") center/cover no-repeat border-box, #e4a3d4;
@@ -48,44 +72,147 @@ h4 {
     color: white;
     margin: auto;
     text-align: center;
-    width: 40%;
+    width: 80%;
 }
 
-.jumbotron__text a {
-    background: #e4a3d4;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-}
-
-.jumbotron__text a:hover,
-.jumbotron__text a:active {
-    background: white;
-    color: #e4a3d4;
-}
+/* FIRST SECTION */
 
 .intro {
+    align-items: center;
     display: flex;
-    justify-content: space-around;
-    margin: 5rem 0;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    margin: 7rem auto;
+    max-width: 1300px;
     width: 100%;
 }
 
 .intro img {
     box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.5);
-    width: 40%;
+    width: 80%;
 }
 
 .intro__text {
-    text-align: right;
-    width: 40%;
+    text-align: center;
+    width: 80%;
 }
 
 .intro__text h2 {
     color: #e4a3d4;
     font-weight: bold;
+}
+
+/* SECOND SECTION */
+
+.highlights {
+    background: #e4a3d4;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 7rem auto;
+    max-width: 1300px;
+    padding: 7rem 3rem;
+    text-align: center;
+}
+
+.highlight {
+    margin: 2rem auto;
+    max-width: 325px;
+}
+
+/* THIRD SECTION */
+
+.money {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  
+    margin: 7rem auto;
+    max-width: 1300px;
+}
+
+.money__text {
+    text-align: center;
+    width: 80%;
+}
+
+.money__image {
+    align-items: center;
+    background: #e4a3d4;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    padding: 2rem;
+    width: 80%;
+}
+
+.money__image img {
+    box-shadow: 0 0 6px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    height: 4rem;
+    margin: 1rem;
+    width: 4rem;
+}
+
+/* FOOTER */
+
+.footer {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+@media (min-width: 500px) {
+    .jumbotron__text {
+        width: 40%;
+    }
+
+    .intro {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+    
+    .intro img {
+        width: 40%;
+    }
+    
+    .intro__text {
+        text-align: right;
+        width: 40%;
+    }
+        
+    .money {
+        flex-direction: row;
+    }
+
+    .money__text {
+        margin-left: 2rem;
+        text-align: left;
+        width: 40%;
+    }
+
+    .money__image {
+        border-radius: 50% 0 0 50%;
+        padding: 2rem 0 2rem 2rem;
+        width: 50%;
+    }
+
+    .money__image img {
+        height: 10rem;
+        width: 10rem;
+    }
+}
+
+@media (min-width: 675px) {
+    .highlights {
+        flex-direction: row;
+    }
+
+    .highlight {
+        margin: 0 2rem;
+    }
 }
