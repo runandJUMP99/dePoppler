@@ -1,18 +1,37 @@
 body {
   align-items: center;
-  background-color: #fce2db;
-  background-image: -webkit-linear-gradient(65deg, #f1c6d3 50%, #fce2db 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 100%, transparent), 
+  url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/woman-3040029_1920.jpg?alt=media&token=dcaa84ad-6431-488a-adc1-37dfb90957b1") center/cover no-repeat border-box, #e4a3d4;
   display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  height: 100vh;
   justify-content: space-around;
   -ms-flex-align: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
 }
 
-img {
-  border-radius: 50%;
+.signup-message {
+  color: white;
+  padding: 10rem 5rem;
+}
+
+.signup-message p {
+  width: 50%;
+}
+
+.signup-section {
+  align-self: stretch;
+}
+
+.signup-background {
+  background: white;
+  border-radius: 1.5rem;
+  margin: 5rem 2rem 0;
+  padding: 2rem;
+}
+
+.signup-divider {
+  margin: 0.5rem 0;
+  text-align: center;
 }
 
 .form-signin {
@@ -42,15 +61,4 @@ img {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-.signup-background {
-  background: white;
-  border-radius: 1.5rem;
-  padding: 2rem;
-}
-
-.signup-divider {
-  margin: 0.5rem 0;
-  text-align: center;
 }

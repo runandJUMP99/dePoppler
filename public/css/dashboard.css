@@ -1,0 +1,122 @@
+/* SIDEBAR */
+
+.sidebar {
+    background: #e4a3d4;
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    left: 0;
+    position: fixed;
+    width: 20%;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+}
+
+.sidebar a:hover {
+    background: white;
+    color: #e4a3d4;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* DISPLAY */
+
+.display {
+    margin-left: 20%;
+}
+
+.display__welcome {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 100%, transparent), 
+    url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/cliffs-1846886_1920.jpg?alt=media&token=7d680130-dbc7-4ff2-8577-6f2bb35fe6c4") center/cover no-repeat border-box, #e4a3d4;
+    color: white;
+    padding: 4rem 3rem;
+    width: 100%;
+}
+
+.display__top {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    padding: 3rem 0;
+}
+
+/* REPORTS */
+
+.report h4 {
+    margin: 0;
+}
+
+/* GRAPH */
+
+.graph-section {
+    text-align: center;
+}
+
+.graph {
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    display: flex;
+    height: 15rem;
+    width: 20rem;
+}
+
+.graph__bar {
+    align-self: flex-end;
+    background: #e4a3d4;
+    height: 10rem;
+    margin: 0 0.75rem;
+    width: 2rem;
+}
+
+.groups {
+    display: flex;
+}
+
+.groups p {
+    margin: 1rem 0.5rem;
+    transform: rotate(-70deg);
+}
+
+/* ITEMS COUNTER */
+
+.items-counter {
+    display: flex;
+    justify-content: space-around;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.item-counter {
+    margin: 0 1rem;
+}
+
+.item-counter h4 {
+    font-size: 2rem;
+    margin: 0.5rem;
+}
+
+.item-counter h1 {
+    font-size: 4rem
+}
+
+/* 
+COLOR PALETTE
+fce2db
+f1c6d3
+e4a3d4
+c295d8 */
+
+/*

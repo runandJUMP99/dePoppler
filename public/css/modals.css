@@ -1,66 +1,3 @@
-.intro-backdrop {
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    height: 100vw;
-    left: 0;
-    position: fixed;
-    top: 0;
-    width: 100vw;
-}
-
-.intro-modal {
-    background: white;
-    border-radius: 2rem;
-    display: none;
-    height: 27rem;
-    left: 50%;
-    margin: auto; 
-    position: fixed;
-    transform: translate(-50%, 0);
-    width: 80%;      
-}
-
-.intro-modal-slides {
-    margin: auto;
-    top: 10%;
-    width: 80%;
-}
-
-.intro-modal-buttons {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem 4rem;
-    position: relative;
-    top: 12%;
-}
-
-.intro-modal-button {
-    background: #fce2db;
-    border: 5px solid #e4a3d4;
-    border-radius: 2rem; 
-    color: #c295d8;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 0.4rem 1.2rem;
-}
-
-.intro-modal-button:hover {
-    color: white;
-    text-decoration: none;
-}
-
-.intro-modal__slide-buttons {
-    position: relative;
-}
-
-li.intro-modal__slide-button {
-    background-color: black;
-    border-radius: 50%;
-    height: 1rem;
-    margin: 0.5rem;
-    width: 1rem;
-}
-
 .backdrop {
     background: rgba(0, 0, 0, 0.5);
     display: none;
@@ -71,24 +8,19 @@ li.intro-modal__slide-button {
     width: 100vw;
     z-index: 10;
 }
-
-.img-slide {
-    background: #ccc;
-    border-radius: 0 1.5rem 1.5rem 1.5rem;
-    height: 17rem;
-}
   
 .modal__new-item {
     background: white;
     border: solid 1px #ccc;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-    display: none;
     left: 50%;
+    opacity: 0;
     padding: 1rem;
     position: fixed;
     text-align: center;
     top: 20%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -200%);
+    transition: all 0.5s ease-out;
     width: 50%;
     z-index: 10;
 }
@@ -110,4 +42,9 @@ li.intro-modal__slide-button {
   
 .open {
     display: block !important;
+}
+
+.modal__open {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }

@@ -1,11 +1,89 @@
 <%- include("partials/header.ejs") %>
   
-<% foundItems.forEach(function(item) { %>
+<nav class="sidebar">
+    <ul>
+        <li>
+            <a href="/dashboard">Home</a>
+        </li>
+        <li>
+            <a href="/closet">Closet</a>
+        </li>
+        <li>
+            <a href="/photod">Photo'd</a>
+        </li>
+        <li>
+            <a href="/listed">List'd</a>
+        </li>
+        <li>
+            <a href="/dashboard">Money</a>
+        </li>
+    </ul>
+    <button class="upload-button">Add Item</button>
+</nav>
 
-    <nav class="sidebar">
-        sidebar
-    </nav>
 
-<% }) %>
+<div class="display">
+
+    <div class="display__welcome">
+        <h2>Hello, User</h2>
+        <p>Hope all is well.</p>
+    </div>
+
+    <div class=display__top>
+
+        <div class="reports-section">
+            <div class="report">
+                <h4>This Week's Sales: </h3>
+                <p>24</p>
+            </div>
+            <div class="report">
+                <h4>This Week's Gross: </h3>
+                <p>$657.00</p>
+            </div>
+            <div class="report">
+                <h4>This Week's Net: </h3>
+                <p>$598.00</p>
+            </div>
+        </div>
+        
+        <div class="graph-section">
+            <div>
+                <h3>Sales By Group</h3>
+            </div>
+            <div class="graph">
+                <div class="graph__bar"></div>
+                <div class="graph__bar"></div>
+                <div class="graph__bar"></div>
+                <div class="graph__bar"></div>
+                <div class="graph__bar"></div>
+            </div>
+            <div class="groups">
+                <p>Shirts</p>
+                <p>Pants</p>
+                <p>Shoes</p>
+                <p>Hats</p>
+                <p>Other</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="items-counter">
+
+        <div class="item-counter">
+            <h4>Closet</h4>
+            <h1><%= count.closet %></h1>
+        </div>
+        <div class="item-counter">
+            <h4>Photo'd</h4>
+            <h1><%= count.photod %></h1>
+        </div>
+        <div class="item-counter">
+            <h4>List'd</h4>
+            <h1><%= count.listed %></h1>
+        </div>
+
+    </div>
+
+</div>
     
 <%- include("partials/footer.ejs") %>

@@ -18,7 +18,7 @@
     </div>
 
     <ul class="items-section">
-        <h1 class="status-header">closet</h1>
+        <h1 class="status-header">Closet</h1>
         
         <% foundItems.forEach(function(item) { %>
             <% if (item.status == "closet") { %>
@@ -30,15 +30,19 @@
                             <img src="<%= item.img %>" alt="">
                         </div>
                         <div>
-                            <label class="item-name-label" for="itemName">item name |</label>
+                            <label class="item-name-label" for="itemName">Item Name |</label>
                             <li class="item-name" name="itemName"> <%= item.name %> </li>
                         </div>
                         <div>
-                            <label class="status-label" for="price">price |</label>
-                            <li class="item-name" name="itemName"> <%= item.price %> </li>
+                            <label class="status-label" for="price">Price |</label>
+                            <li class="item-name" name="price"> <%= item.price %> </li>
+                        </div>
+                        <div>
+                            <label class="status-label" for="price">Category |</label>
+                            <li class="item-name" name="category"> <%= item.group %> </li>
                         </div>
                         <div class="move-to-section">
-                            <label class="status-label">move to: </label>
+                            <label class="status-label">Move To: </label>
                             <div class="move-to-buttons">
                                 <label>photo'd</label>
                                 <input type="checkbox" name="movePhotod" value="photod" onChange="submit()">

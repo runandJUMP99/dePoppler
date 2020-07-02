@@ -37,10 +37,11 @@ const userSchema = new mongoose.Schema({
     password: String,
     socialId: String,
     items: [{
-        name: String,
-        status: String,
+        group: String,
         img: String,
-        price: String
+        name: String,
+        price: String,
+        status: String
     }]
 });
 
@@ -88,20 +89,20 @@ function(accessToken, refreshToken, profile, cb) {
     });
 }));
 
-app.get("/", function(req, res) {
-    res.render("home");
-});
-
 app.get("/auth/google",
-    passport.authenticate("google", {scope: ["profile"]})
+passport.authenticate("google", {scope: ["profile"]})
 );
 
 app.get("/auth/google/home",
-    passport.authenticate("google", {
-        successRedirect: "/dashboard",
-        failureRedirect: "/login"
-    })
+passport.authenticate("google", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login"
+})
 );
+
+app.get("/", function(req, res) {
+    res.render("home");
+});
 
 app.get("/closet", function(req, res) {
     User.findById(req.user.id, function(err, foundUser) {
@@ -116,7 +117,6 @@ app.get("/closet", function(req, res) {
         }
     });
 });
-
 
 app.get("/listed", function(req, res) {
     User.findById(req.user.id, function(err, foundUser) {
@@ -141,13 +141,13 @@ app.get("/logout", function(req, res) {
     res.redirect("/login");
 });
 
-app.get("/newuser", function(req, res) {
-    if (req.isAuthenticated()) {
-        res.render("newuser");
-    } else {
-        res.redirect("/register");
-    }    
-});
+// app.get("/newuser", function(req, res) {
+//     if (req.isAuthenticated()) {
+//         res.render("newuser");
+//     } else {
+//         res.redirect("/register");
+//     }    
+// });
 
 app.get("/register", function(req, res) {
     res.render("register");
@@ -174,22 +174,39 @@ app.get("/dashboard", function(req, res) {
         } else {
             if (foundUser) {
                 const foundItems = foundUser.items;
+                const count = {
+                    closet: 0,
+                    photod: 0,
+                    listed: 0
+                }
+                
+                foundItems.forEach(item => {
+                    if (item.status === "closet") {
+                        count.closet++;
+                    } else if (item.status === "photod") {
+                        count.photod++;
+                    } else if (item.status === "listed") {
+                        count.listed++;
+                    }
+                });
 
-                res.render("dashboard", {foundItems: foundItems});
+                res.render("dashboard", {count: count});
             }
         }
     });
 });
 
 app.post("/", function(req, res) {
+    const group = req.body.group;
     const newItem = req.body.item;
     const price = req.body.price;
     
     if (newItem) {
         const item = {
+            group: group,
             name: newItem,
             price: price,
-            status: "closet"
+            status: "closet",
         };
         
         User.findById(req.user.id, function(err, foundUser) {
