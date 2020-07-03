@@ -1,5 +1,7 @@
 <%- include('partials/header.ejs') %>
 
+<%- include("partials/sidebar.ejs") %>
+
     <div class="modal__upload-img">
         <h1 class="newEntryForm__header">upload image</h1>
         <form action="/upload" method="post" enctype="multipart/form-data">
@@ -17,51 +19,53 @@
         </form>
     </div>
 
-    <ul class="items-section">
-        <h1 class="status-header">Closet</h1>
+    <div class="display">
+
+        <div class="display__welcome">
+            <h2>Hello, Steven </h2>
+            <p>Welcome to your closet.</p>
+        </div>
         
         <% foundItems.forEach(function(item) { %>
             <% if (item.status == "closet") { %>
 
-                <form action="/change" method="post">
-                    <div class="item">
-                        <div class="item-img-container">
-                            <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                            <img src="<%= item.img %>" alt="">
-                        </div>
-                        <div>
-                            <label class="item-name-label" for="itemName">Item Name |</label>
-                            <li class="item-name" name="itemName"> <%= item.name %> </li>
-                        </div>
-                        <div>
-                            <label class="status-label" for="price">Price |</label>
-                            <li class="item-name" name="price"> <%= item.price %> </li>
-                        </div>
-                        <div>
-                            <label class="status-label" for="price">Category |</label>
-                            <li class="item-name" name="category"> <%= item.group %> </li>
-                        </div>
-                        <div class="move-to-section">
-                            <label class="status-label">Move To: </label>
-                            <div class="move-to-buttons">
-                                <label>photo'd</label>
-                                <input type="checkbox" name="movePhotod" value="photod" onChange="submit()">
-                                <label>list'd</label>
-                                <input type="checkbox" name="moveListed" value="listed" onChange="submit()">
-                                <label>delete</label>
-                                <input type="checkbox" name="moveDelete" value="delete" onChange="submit()">
-                                <input type="hidden" name="moveId" value="<%= item.id %>">
+                <div class="items-section">
+                    <form action="/change" method="post">
+                        <div class="item">
+                            <div class="item-img-container">
+                                <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
+                                <img src="<%= item.img %>" alt="">
+                            </div>
+                            <div>
+                                <label class="item-name-label" for="itemName">Item Name |</label>
+                                <li class="item-name" name="itemName"> <%= item.name %> </li>
+                            </div>
+                            <div>
+                                <label class="status-label" for="price">Price |</label>
+                                <li class="item-name" name="price"> <%= item.price %> </li>
+                            </div>
+                            <div>
+                                <label class="status-label" for="price">Category |</label>
+                                <li class="item-name" name="category"> <%= item.group %> </li>
+                            </div>
+                            <div class="move-to-section">
+                                <label class="status-label">Move To: </label>
+                                <div class="move-to-buttons">
+                                    <label>photo'd</label>
+                                    <input type="checkbox" name="movePhotod" value="photod" onChange="submit()">
+                                    <label>list'd</label>
+                                    <input type="checkbox" name="moveListed" value="listed" onChange="submit()">
+                                    <label>delete</label>
+                                    <input type="checkbox" name="moveDelete" value="delete" onChange="submit()">
+                                    <input type="hidden" name="moveId" value="<%= item.id %>">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-
+                    </form>
+                </div>
             <% } %>
         <% }) %>
 
-    </ul>
-    <div class="upload-section">
-        <button class="upload-button">add new item</button>
     </div>
 
 <%- include('partials/footer.ejs'); %>

@@ -33,6 +33,7 @@ mongoose.connect(`mongodb+srv://runandJUMP:${process.env.PASSWORD}@depoppler-xzn
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
+    name: String,
     email: String,
     password: String,
     socialId: String,
@@ -42,7 +43,16 @@ const userSchema = new mongoose.Schema({
         name: String,
         price: String,
         status: String
-    }]
+    }],
+    sales: {
+        firstGroup: Number,
+        secondGroup: Number,
+        thirdGroup: Number
+    },
+    money: {
+        salesGross: Number,
+        salesCost: Number
+    }
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -84,7 +94,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/home"
 },
 function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({socialId: profile.id, username: profile.id}, function(err, user) {
+    User.findOrCreate({name: profile.name.givenName, socialId: profile.id, username: profile.id}, function(err, user) {
         return cb(err, user);
     });
 }));
@@ -113,6 +123,35 @@ app.get("/closet", function(req, res) {
                 const foundItems = foundUser.items;
 
                 res.render("closet", {foundItems: foundItems});
+            }
+        }
+    });
+});
+
+app.get("/dashboard", function(req, res) {
+    User.findById(req.user.id, function(err, foundUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                const count = {
+                    closet: 0,
+                    photod: 0,
+                    listed: 0
+                };
+                const data = [foundUser, count];
+                
+                foundUser.items.forEach(item => {
+                    if (item.status === "closet") {
+                        count.closet++;
+                    } else if (item.status === "photod") {
+                        count.photod++;
+                    } else if (item.status === "listed") {
+                        count.listed++;
+                    }
+                });
+
+                res.render("dashboard", {data: data});
             }
         }
     });
@@ -167,34 +206,9 @@ app.get("/photod", function(req, res) {
     });
 });
 
-app.get("/dashboard", function(req, res) {
-    User.findById(req.user.id, function(err, foundUser) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                const foundItems = foundUser.items;
-                const count = {
-                    closet: 0,
-                    photod: 0,
-                    listed: 0
-                }
-                
-                foundItems.forEach(item => {
-                    if (item.status === "closet") {
-                        count.closet++;
-                    } else if (item.status === "photod") {
-                        count.photod++;
-                    } else if (item.status === "listed") {
-                        count.listed++;
-                    }
-                });
 
-                res.render("dashboard", {count: count});
-            }
-        }
-    });
-});
+// POSTS
+
 
 app.post("/", function(req, res) {
     const group = req.body.group;

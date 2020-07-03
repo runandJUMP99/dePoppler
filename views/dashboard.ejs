@@ -1,31 +1,11 @@
 <%- include("partials/header.ejs") %>
   
-<nav class="sidebar">
-    <ul>
-        <li>
-            <a href="/dashboard">Home</a>
-        </li>
-        <li>
-            <a href="/closet">Closet</a>
-        </li>
-        <li>
-            <a href="/photod">Photo'd</a>
-        </li>
-        <li>
-            <a href="/listed">List'd</a>
-        </li>
-        <li>
-            <a href="/dashboard">Money</a>
-        </li>
-    </ul>
-    <button class="upload-button">Add Item</button>
-</nav>
-
+<%- include("partials/sidebar.ejs") %>
 
 <div class="display">
 
     <div class="display__welcome">
-        <h2>Hello, User</h2>
+        <h2>Hello, <%= data[0].name %> </h2>
         <p>Hope all is well.</p>
     </div>
 
@@ -33,16 +13,25 @@
 
         <div class="reports-section">
             <div class="report">
-                <h4>This Week's Sales: </h3>
-                <p>24</p>
+                <div class="report__left">
+                    <h6>This Week's Sales: </h6>
+                    <p><i class="fas fa-hand-point-up"></i> +25.75%</p>
+                </div>
+                <h4>24</h4>
             </div>
             <div class="report">
-                <h4>This Week's Gross: </h3>
-                <p>$657.00</p>
+                <div class="report__left">
+                    <h6>This Week's Gross: </h6>
+                    <p><i class="fas fa-hand-point-up"></i> +15.30%</p>
+                </div>
+                <h4>$657.00</h4>
             </div>
             <div class="report">
-                <h4>This Week's Net: </h3>
-                <p>$598.00</p>
+                <div class="report__left">
+                    <h6>This Week's Net: </h6>
+                    <p><i class="fas fa-hand-point-up"></i> +5.34%</p>
+                </div>
+                <h4>$598.00</h4>
             </div>
         </div>
         
@@ -51,18 +40,14 @@
                 <h3>Sales By Group</h3>
             </div>
             <div class="graph">
-                <div class="graph__bar"></div>
-                <div class="graph__bar"></div>
-                <div class="graph__bar"></div>
-                <div class="graph__bar"></div>
-                <div class="graph__bar"></div>
+                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
+                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
+                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
             </div>
             <div class="groups">
                 <p>Shirts</p>
                 <p>Pants</p>
                 <p>Shoes</p>
-                <p>Hats</p>
-                <p>Other</p>
             </div>
         </div>
     </div>
@@ -71,15 +56,15 @@
 
         <div class="item-counter">
             <h4>Closet</h4>
-            <h1><%= count.closet %></h1>
+            <h1><%= data[1].closet %></h1>
         </div>
         <div class="item-counter">
             <h4>Photo'd</h4>
-            <h1><%= count.photod %></h1>
+            <h1><%= data[1].photod %></h1>
         </div>
         <div class="item-counter">
             <h4>List'd</h4>
-            <h1><%= count.listed %></h1>
+            <h1><%= data[1].listed %></h1>
         </div>
 
     </div>
