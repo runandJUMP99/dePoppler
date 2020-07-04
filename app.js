@@ -10,6 +10,15 @@ const passport = require("passport");
 const passportLocalMongoose = require ("passport-local-mongoose");
 const session = require("express-session"); 
 
+let callbackURL = "http://localhost:3000/auth/"
+let port = process.env.PORT;
+
+if (port == null || port == "") {
+    port = 3000;
+} else {
+    callbackURL = "https://secret-sea-49678.herokuapp.com/"
+}
+
 const app = express();
 
 app.use(express.static("public"));
@@ -75,7 +84,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/home"
+    callbackURL: callbackURL + "facebook/home"
 },
 function(accessToken, refreshToken, profile, done) {
     User.findOrCreate({socialId: profile.id}, function(err, user) {
@@ -91,7 +100,7 @@ function(accessToken, refreshToken, profile, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/home"
+    callbackURL: callbackURL + "google/home"
 },
 function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({name: profile.name.givenName, socialId: profile.id, username: profile.id}, function(err, user) {
@@ -356,11 +365,6 @@ app.post("/upload", function(req, res) {
 
     res.redirect("/closet");
 });
-
-let port = process.env.PORT;
-if (port == null || port == "") {
-    port = 3000;
-}
 
 app.listen(port, function() {
     console.log("Server started successfully");
