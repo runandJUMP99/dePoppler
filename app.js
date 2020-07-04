@@ -16,7 +16,7 @@ let port = process.env.PORT;
 if (port == null || port == "") {
     port = 3000;
 } else {
-    callbackURL = "https://secret-sea-49678.herokuapp.com/auth"
+    callbackURL = "https://secret-sea-49678.herokuapp.com/auth/"
 }
 
 const app = express();
