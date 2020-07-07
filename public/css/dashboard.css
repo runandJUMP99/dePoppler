@@ -9,13 +9,8 @@
     justify-content: space-between;
     left: 0;
     position: fixed;
-    width: 20%;
-}
-
-.sidebar h1 {
-    color: white;
-    font-size: 2rem;
-    padding: 1rem;
+    transition: all 0.5s ease-out;
+    width: 4rem;
 }
 
 .sidebar ul {
@@ -28,10 +23,11 @@
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
     color: white;
     display: block;
-    margin: 0.7rem 2rem;
+    margin: 0.7rem auto;
     padding: 0.5rem 1rem;
     text-decoration: none;
     transition: all 0.2s ease-out;
+    width: 80%;
 }
 
 .sidebar a:hover {
@@ -40,11 +36,55 @@
     font-weight: bold;
 }
 
+.sidebar-logo {
+    color: white;
+    font-size: 2rem;
+    margin: 0 auto;
+    padding: 1rem 0 2rem;
+    width: 80%;
+}
+
+.sidebar-text {
+    display: none;
+    opacity: 0;
+}
+
+.sidebar__bottom-buttons {
+    margin: auto;
+    width: 80%;
+}
+
+.expand {
+    background: #e4a3d4;
+    border: none;
+    border-radius: 32px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
+    color: white;
+    font-weight: bold;
+    margin: 0.5rem auto;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease-out;
+    width: 100%;
+}
+
+.expand:hover,
+.expand:active {
+    background: white;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.5);
+    color: #e4a3d4;
+}
+
+.sidebar__expand {
+    width: 15rem !important;
+}
+
+
 /* DISPLAY */
+
 
 .display {
     height: 100%;
-    margin-left: 20%;
+    margin-left: 7%;
     padding-bottom: 2rem;
 }
 
@@ -160,6 +200,25 @@
 
 .item-counter h1 {
     font-size: 4rem
+}
+
+@media (min-width: 900px) {
+    .display {
+        margin-left: 20%;
+    }
+
+    .sidebar {
+        width: 20%;
+    }
+
+    .sidebar-text {
+        display: initial;
+        opacity: 1;
+    }
+
+    .expand {
+        display: none;
+    }
 }
 
 /* 

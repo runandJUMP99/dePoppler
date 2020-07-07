@@ -54,7 +54,8 @@
 }
   
 .open {
-    display: block !important;
+    display: inline-block !important;
+    opacity: 1;
 }
 
 .modal__open {

@@ -4,20 +4,21 @@ body {
   height: 100%;
 }
 
-.upload-button {
+.add-item-button {
     background: #e4a3d4;
     border: none;
     border-radius: 32px;
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
     color: white;
     font-weight: bold;
-    margin: 4rem 2rem;
+    margin: 0.5rem auto;
     padding: 0.5rem 1rem;
     transition: all 0.2s ease-out;
+    width: 100%;
 }
 
-.upload-button:hover,
-.upload-button:active {
+.add-item-button:hover,
+.add-item-button:active {
     background: white;
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.5);
     color: #e4a3d4;

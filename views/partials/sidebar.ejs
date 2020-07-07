@@ -1,21 +1,24 @@
 <nav class="sidebar">
-    <h1>dePoppler</h1>
+    <h1 class="sidebar-logo">dePoppler</h1>
     <ul>
         <li>
-            <a href="/dashboard"><i class="fas fa-home"></i> Home</a>
+            <a href="/dashboard"><i class="fas fa-home"></i> <span class="sidebar-text">Home</span></a>
         </li>
         <li>
-            <a href="/closet"><i class="fas fa-door-closed"></i> Closet</a>
+            <a href="/closet"><i class="fas fa-door-closed"></i> <span class="sidebar-text">Closet</span></a>
         </li>
         <li>
-            <a href="/photod"><i class="fas fa-camera-retro"></i> Photo'd</a>
+            <a href="/photod"><i class="fas fa-camera-retro"></i> <span class="sidebar-text">Photo'd</span></a>
         </li>
         <li>
-            <a href="/listed"><i class="fas fa-store"></i> List'd</a>
+            <a href="/listed"><i class="fas fa-store"></i> <span class="sidebar-text">List'd</span></a>
         </li>
         <li>
-            <a href="/dashboard"><i class="fas fa-money-bill-wave"></i> Money</a>
+            <a href="/dashboard"><i class="fas fa-money-bill-wave"></i> <span class="sidebar-text">Money</span></a>
         </li>
     </ul>
-    <button class="upload-button">Add Item</button>
+    <div class="sidebar__bottom-buttons">
+        <button class="add-item-button"><i class="fas fa-plus"></i> <span class="sidebar-text">Add Item</span></button>
+        <button class="expand"><i class="fas fa-angle-right"></i></button>
+    </div>
 </nav>

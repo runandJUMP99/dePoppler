@@ -124,20 +124,6 @@ app.get("/", function(req, res) {
     res.render("home");
 });
 
-app.get("/closet", function(req, res) {
-    User.findById(req.user.id, function(err, foundUser) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                const foundItems = foundUser.items;
-
-                res.render("closet", {foundItems: foundItems});
-            }
-        }
-    });
-});
-
 app.get("/dashboard", function(req, res) {
     User.findById(req.user.id, function(err, foundUser) {
         if (err) {
@@ -167,20 +153,6 @@ app.get("/dashboard", function(req, res) {
     });
 });
 
-app.get("/listed", function(req, res) {
-    User.findById(req.user.id, function(err, foundUser) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                const foundItems = foundUser.items;
-                
-                res.render("listed", {foundItems: foundItems});
-            }
-        }
-    });
-});
-
 app.get("/login", function(req, res) {
     res.render("login");
 });
@@ -190,27 +162,23 @@ app.get("/logout", function(req, res) {
     res.redirect("/login");
 });
 
-// app.get("/newuser", function(req, res) {
-//     if (req.isAuthenticated()) {
-//         res.render("newuser");
-//     } else {
-//         res.redirect("/register");
-//     }    
-// });
-
 app.get("/register", function(req, res) {
     res.render("register");
 });
 
-app.get("/photod", function(req, res) {
+app.get("/:status", function(req, res) {
+    const status = req.params.status;
+
     User.findById(req.user.id, function(err, foundUser) {
         if (err) {
             console.log(err);
         } else {
             if (foundUser) {
-                const foundItems = foundUser.items;
+                const foundItems = foundUser.items.filter(item => {
+                    return item.status == status;
+                });
 
-                res.render("photod", {foundItems: foundItems});
+                res.render("status", {foundItems: foundItems});
             }
         }
     });
@@ -224,9 +192,7 @@ app.post("/", function(req, res) {
     const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
     const price = req.body.price;
-    
-    console.log(group);
-    
+        
     if (newItem) {
         const item = {
             group: group,
@@ -255,12 +221,10 @@ app.post("/", function(req, res) {
 });
 
 app.post("/change", function(req, res) {
-    const moveCloset= req.body.moveCloset;
-    const movePhotod= req.body.movePhotod;
-    const moveListed= req.body.moveListed;
+    const moveItem = req.body.moveItem;
     const moveId = req.body.moveId;
 
-    if (moveCloset == "closet") {
+    if (moveItem == "closet") {
         User.updateOne(
             {"items._id": moveId}, 
             {"$set": {"items.$.status": "closet"}},
@@ -272,8 +236,8 @@ app.post("/change", function(req, res) {
             }
         });
 
-        res.redirect("/closet");
-    } else if (movePhotod == "photod") {
+        res.redirect("/:closet");
+    } else if (moveItem == "photod") {
         User.updateOne(
             {"items._id": moveId}, 
             {"$set": {"items.$.status": "photod"}},
@@ -285,8 +249,8 @@ app.post("/change", function(req, res) {
             }
         });
 
-        res.redirect("/photod");
-    } else if (moveListed == "listed") {
+        res.redirect("/:photod");
+    } else if (moveItem == "listed") {
         User.updateOne(
             {"items._id": moveId}, 
             {"$set": {"items.$.status": "listed"}},
@@ -298,11 +262,11 @@ app.post("/change", function(req, res) {
             }
         });
 
-        res.redirect("/listed");
+        res.redirect("/:listed");
     } else {
         User.findByIdAndUpdate(req.user.id, {$pull: {items: {_id: moveId}}}, function(err) {
             if (!err) {
-              res.redirect("/closet");
+              res.redirect("/:closet");
             }
         });
     } 
