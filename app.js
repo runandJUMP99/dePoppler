@@ -1,4 +1,5 @@
 require('dotenv').config();
+const _ = require('lodash');
 const bodyParser = require("body-parser");
 const express = require ("express");
 const FacebookStrategy = require("passport-facebook").Strategy;
@@ -220,9 +221,11 @@ app.get("/photod", function(req, res) {
 
 
 app.post("/", function(req, res) {
-    const group = req.body.group;
+    const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
     const price = req.body.price;
+    
+    console.log(group);
     
     if (newItem) {
         const item = {

@@ -13,6 +13,8 @@
     background: white;
     border: solid 1px #ccc;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
     left: 50%;
     opacity: 0;
     padding: 1rem;
@@ -23,6 +25,17 @@
     transition: all 0.5s ease-out;
     width: 50%;
     z-index: 10;
+}
+
+.modal__new-item select,
+.modal__new-item input,
+.modal__new-item button {
+    margin: 0.5rem auto;
+    width: 60%;
+}
+
+.modal__new-item button{
+    width: 30%;
 }
   
 .modal__upload-img {

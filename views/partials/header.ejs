@@ -16,19 +16,16 @@
 </head>
 <body>
     <div class="backdrop"></div>
-    <div class="modal__new-item">
-        <form action="/" method="post">
-            <h1 class="newEntryForm__header">enter new item</h1>
-            <input type="text" name="item" placeholder="new item" autocomplete="off">
-            <input type="text" name="price" placeholder="price" autocomplete="off">
-            <select name="group" id="group">
-                <option value="shirts">Shirts</option>
-                <option value="pants">Pants</option>
-                <option value="shoes">Shoes</option>
-                <option value="hats">Hats</option>
-                <option value="other">Other</option>
-            </select>
-            <button class="upload-button">add to closet</button>
-        </form>
-    </div>
-    <header>
+    <form class="modal__new-item" action="/" method="post">
+        <h1 class="newEntryForm__header">Enter New Item</h1>
+        <select name="group" id="group">
+            <option value="shirts">Shirts</option>
+            <option value="pants">Pants</option>
+            <option value="shoes">Shoes</option>
+            <option value="hats">Hats</option>
+            <option value="other">Other</option>
+        </select>
+        <input type="text" name="item" placeholder="New Item" autocomplete="off">
+        <input type="text" name="price" placeholder="Price" autocomplete="off">
+        <button class="upload-button">Add To Closet</button>
+    </form>
