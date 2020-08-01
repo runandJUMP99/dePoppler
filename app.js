@@ -10,6 +10,58 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const passportLocalMongoose = require ("passport-local-mongoose");
 const session = require("express-session"); 
+const usps = require('usps-web-tools-node-sdk');
+usps.configure({ userID: '349RUNAN2685' });
+
+
+// usps.rateCalculator.intlRate({
+//     package: [
+//         { pounds: '15',
+//           ounces: '0',
+//           machinable: true,
+//           mailType: 'Package',
+//           gxg: { poBoxFlag: 'Y',
+//                  giftFlag: 'Y' },
+//           valueOfContents: '200',
+//           country: 'Australia',
+//           container: 'RECTANGULAR',
+//           size: 'LARGE',
+//           width: '10',
+//           length: '15',
+//           height: '10',
+//           girth: '0',
+//           originZip: '18701',
+//           commercialFlag: 'N',
+//           acceptanceDateTime: '2020-07-22T13:15:00-06:00',
+//           destinationPostalCode: '2046' },
+//         { pounds: '0',
+//           ounces: '3',
+//           mailType: 'Envelope',
+//           valueOfContents: '75',
+//           country: 'Algeria',
+//           container: '',
+//           size: 'REGULAR',
+//           width: '',
+//           length: '',
+//           height: '',
+//           girth: '',
+//           originZip: '',
+//           commercialFlag: 'N',
+//           extraServices: ['6'] }
+//       ],
+//     revision: ['2']
+// },
+//     function (error, response) {
+//         if (error) {
+//         // if there's a problem, the error object won't be null
+//         console.log(error);
+//         } else {
+//         // otherwise, you'll get a response object
+//         console.log(response.package[0].service);
+//         console.log(response.package[0].error);
+//         }
+//     }
+// );
 
 let callbackURL = "http://localhost:3000/auth/"
 let port = process.env.PORT;
@@ -51,7 +103,7 @@ const userSchema = new mongoose.Schema({
         group: String,
         img: String,
         name: String,
-        price: String,
+        price: Number,
         status: String
     }],
     sales: {
@@ -133,10 +185,19 @@ app.get("/dashboard", function(req, res) {
                 const count = {
                     closet: 0,
                     photod: 0,
-                    listed: 0
+                    listed: 0,
+                    sold: 0
                 };
-                const data = [foundUser, count];
-                
+                const totals = {
+                    gross: 0,
+                    net: 0
+                };
+                const salesByGroup = {
+                    shirts: 0,
+                    pants: 0,
+                    shoes: 0
+                }
+
                 foundUser.items.forEach(item => {
                     if (item.status === "closet") {
                         count.closet++;
@@ -144,8 +205,22 @@ app.get("/dashboard", function(req, res) {
                         count.photod++;
                     } else if (item.status === "listed") {
                         count.listed++;
+                    } else if (item.status === "sold") {
+                        count.sold++;
+                        
+                        totals.gross = totals.gross + item.price;
+
+                        if (item.group === "Shirts") {
+                            salesByGroup.shirts++;
+                        } else if (item.group === "Pants") {
+                            salesByGroup.pants++;
+                        } else if (item.group === "Shoes") {
+                            salesByGroup.shoes++;
+                        }
                     }
                 });
+
+                const data = [foundUser, count, totals, salesByGroup];
 
                 res.render("dashboard", {data: data});
             }
@@ -168,15 +243,51 @@ app.get("/register", function(req, res) {
 
 app.get("/:status", function(req, res) {
     const status = req.params.status;
+    let button1;
+    let button2;
+    let class1;
+    let class2;
+    let greeting;
+
+    if (status === "closet") {
+        button1 = "photod";
+        button2 = "listed";
+        class1 = "fas fa-camera-retro";
+        class2 = "fas fa-store";
+        greeting = "Welcome to your closet."
+    } else if (status === "photod") {
+        button1 = "closet";
+        button2 = "listed";
+        class1 = "fas fa-door-closed";
+        class2 = "fas fa-store";
+        greeting = "These are items you have photo'd."
+    } else if (status === "listed") {
+        button1 = "closet";
+        button2 = "photod";
+        class1 = "fas fa-door-closed";
+        class2 = "fas fa-camera-retro";
+        greeting = "These are items you have list'd"
+    } else if (status === "sold") {
+        greeting = "Congrats on these sales!"
+    }
 
     User.findById(req.user.id, function(err, foundUser) {
         if (err) {
             console.log(err);
         } else {
             if (foundUser) {
-                const foundItems = foundUser.items.filter(item => {
+                let foundItems = foundUser.items.filter(item => {
                     return item.status == status;
                 });
+
+                foundItems = {
+                    foundItems: foundItems,
+                    button1: button1,
+                    button2: button2,
+                    class1: class1,
+                    class2: class2,
+                    greeting: greeting
+                }
 
                 res.render("status", {foundItems: foundItems});
             }
@@ -191,7 +302,9 @@ app.get("/:status", function(req, res) {
 app.post("/", function(req, res) {
     const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
-    const price = req.body.price;
+    const priceDollars = parseInt(req.body.priceDollars);
+    const priceCents = parseFloat(req.body.priceCents / 100);
+    const price = (priceDollars + priceCents).toFixed(2);
         
     if (newItem) {
         const item = {
@@ -224,51 +337,25 @@ app.post("/change", function(req, res) {
     const moveItem = req.body.moveItem;
     const moveId = req.body.moveId;
 
-    if (moveItem == "closet") {
-        User.updateOne(
-            {"items._id": moveId}, 
-            {"$set": {"items.$.status": "closet"}},
-            function(err, foundUser) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("updated status--closet route");
-            }
-        });
-
-        res.redirect("/:closet");
-    } else if (moveItem == "photod") {
-        User.updateOne(
-            {"items._id": moveId}, 
-            {"$set": {"items.$.status": "photod"}},
-            function(err, foundUser) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("updated status--photod route");
-            }
-        });
-
-        res.redirect("/:photod");
-    } else if (moveItem == "listed") {
-        User.updateOne(
-            {"items._id": moveId}, 
-            {"$set": {"items.$.status": "listed"}},
-            function(err, foundUser) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("updated status--lised route");
-            }
-        });
-
-        res.redirect("/:listed");
-    } else {
+    if (moveItem === "delete") {
         User.findByIdAndUpdate(req.user.id, {$pull: {items: {_id: moveId}}}, function(err) {
             if (!err) {
-              res.redirect("/:closet");
+              res.redirect("/dashboard");
             }
         });
+    } else {
+        User.updateOne(
+            {"items._id": moveId}, 
+            {"$set": {"items.$.status": moveItem}},
+            function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("updated status-- "+ moveItem + " route");
+            }
+        });
+
+        res.redirect("/closet");
     } 
 });
 

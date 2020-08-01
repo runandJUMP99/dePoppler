@@ -7,7 +7,7 @@
         <form action="/upload" method="post" enctype="multipart/form-data">
             <select name="itemSelected">
 
-                <% foundItems.forEach(function(item) { %>
+                <% foundItems.foundItems.forEach(function(item) { %>
                     <% if (item.status == "closet") { %>
                         <option value="<%= item._id %>"> <%= item.name %> </option>
                     <% } %>
@@ -23,17 +23,20 @@
 
         <div class="display__welcome">
             <h2>Hello, Steven </h2>
-            <p>Welcome to your closet.</p>
+            <p><%= foundItems.greeting %></p>
         </div>
-        
+
         <div class="items-section">
 
-        <% foundItems.forEach(function(item) { %>
-
+            <% foundItems.foundItems.forEach(function(item) { %>
+        
             <form class="item" action="/change" method="post">
-                <div class="item-img-container">
-                    <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                    <img src="<%= item.img %>" alt="">
+                <div class="item__display">
+                    <div class="item-img-container">
+                        <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
+                        <img src="<%= item.img %>" alt="">
+                    </div>
+                    <button name="moveItem" value="sold" class="item__sold">$ SOLD $</button>
                 </div>
                 <div class="item-info">
                     <div class="item-info__top">
@@ -47,14 +50,14 @@
                         </div>
                         <div>
                             <label class="item-name-label" for="price">Price:</label>
-                            <li class="item-name" name="price"> <%= item.price %> </li>
+                            <li class="item-name" name="price">$<%= item.price %></li>
                         </div>
                     </div>
                     <div class="move-to-section">
                         <label class="item-name-label">Move To: </label>
                         <div class="move-to-buttons">
-                            <button name="moveItem" value="photod"><i class="fas fa-camera-retro"></i></button>
-                            <button name="moveItem" value="listed"><i class="fas fa-store"></i></button>
+                            <button name="moveItem" value="<%= foundItems.button1 %>"><i class="<%= foundItems.class1 %>"></i></button>
+                            <button name="moveItem" value="<%= foundItems.button2 %>"><i class="<%= foundItems.class2 %>"></i></button>
                             <button name="moveItem" value="delete"><i class="fas fa-trash"></i></button>
                             <input type="hidden" name="moveId" value="<%= item.id %>">
                         </div>
@@ -62,9 +65,10 @@
                 </div>
             </form>
 
-        <% }) %>
+            <% }) %>
 
         </div>
+    
                 
     </div>
 

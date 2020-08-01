@@ -42,41 +42,9 @@ body {
   text-align: center;
 }
 
-/* FOOTER SECTION */
 
-footer {
-  background: #e4a3d4;
-  color: white;
-}
+/* CLOSET -- PHOTO'd -- LIST'd SECTION */
 
-.footer__nav-buttons {
-  background: white;
-  border: solid 5px #fce2db;
-  border-radius: 2rem;
-  color: #e4a3d4;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-}
-
-.footer__nav-buttons:hover,
-.footer__nav-buttons:active {
-  background: #e4a3d4;
-  color: white;
-  text-decoration: none;
-}
-
-.footer__ul {
-  margin: 2rem 0 0 0;
-}
-
-.footer__links:hover,
-.footer__links:active {
-  text-decoration: #c295d8;
-  color: white;
-}
-
-
-/* CLOSET -- PHOTO'd -- LISTE'd SECTION */
 
 .status-header {
   color: #e4a3d4;
@@ -101,6 +69,7 @@ footer {
   justify-content: space-between;
   margin: 1rem;
   padding: 7rem 1.5rem;
+  position: relative;
   width: 18rem;
 }
 
@@ -108,15 +77,29 @@ footer {
   margin: 0;
 }
 
+.item__display {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 1.5rem;
+}
+
 .item-img-container {
   align-items: center;
+  background: white;
   border: solid 4px #fce2db;
   border-radius: 50%; 
   display: flex;
   height: 6.5rem;
   justify-content: center;
-  margin-right: 1.5rem;
   width: 6.5rem;
+  z-index: 5;
+}
+
+.item-img-container:hover {
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
 }
 
 .item-img-container img {
@@ -125,9 +108,20 @@ footer {
   width: 5.5rem;
 }
 
-.item-img-container:hover {
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-  cursor: pointer;
+.item__sold {
+  background: #55f155;
+  border: none;
+  border-radius: 0 0 8px 8px;
+  bottom: 2.2rem;
+  color: white;
+  font-weight: bold;
+  padding-top: 2rem;
+  position: absolute;
+  width: 5.5rem;
+}
+
+.item__sold:hover {
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
 }
 
 .item-info {

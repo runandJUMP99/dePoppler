@@ -26,6 +26,11 @@
             <option value="other">Other</option>
         </select>
         <input type="text" name="item" placeholder="New Item" autocomplete="off">
-        <input type="text" name="price" placeholder="Price" autocomplete="off">
-        <button class="upload-button">Add To Closet</button>
+        <div class="price-section">
+            <span>$</span>
+            <input type="text" name="priceDollars" class="price" placeholder="XX" autocomplete="off">
+            <span>.</span>
+            <input type="text" name="priceCents" class="price" placeholder="XX" autocomplete="off">
+        </div>
+        <button class="add-item-button">Add To Closet</button>
     </form>

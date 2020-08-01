@@ -17,21 +17,21 @@
                     <h6>This Week's Sales: </h6>
                     <p><i class="fas fa-hand-point-up"></i> +25.75%</p>
                 </div>
-                <h4>24</h4>
+                <h4><%= data[1].sold %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Gross: </h6>
                     <p><i class="fas fa-hand-point-up"></i> +15.30%</p>
                 </div>
-                <h4>$657.00</h4>
+                <h4>$<%= data[2].gross %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Net: </h6>
                     <p><i class="fas fa-hand-point-up"></i> +5.34%</p>
                 </div>
-                <h4>$598.00</h4>
+                <h4>$<%= data[2].net %></h4>
             </div>
         </div>
         
@@ -40,9 +40,9 @@
                 <h3>Sales By Group</h3>
             </div>
             <div class="graph">
-                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
-                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
-                <div class="graph__bar" style="height: <%= data[0].sales %> ;"></div>
+                <div class="graph__bar" style="height: <%= data[3].shirts %>rem;"></div>
+                <div class="graph__bar" style="height: <%= data[3].pants %>rem;"></div>
+                <div class="graph__bar" style="height: <%= data[3].shoes %>rem;"></div>
             </div>
             <div class="groups">
                 <p>Shirts</p>

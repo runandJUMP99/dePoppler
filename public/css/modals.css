@@ -17,7 +17,7 @@
     flex-direction: column;
     left: 50%;
     opacity: 0;
-    padding: 1rem;
+    padding: 1rem 8rem;
     position: fixed;
     text-align: center;
     top: 20%;
@@ -31,11 +31,23 @@
 .modal__new-item input,
 .modal__new-item button {
     margin: 0.5rem auto;
-    width: 60%;
+    width: 100%;
 }
 
-.modal__new-item button{
-    width: 30%;
+.modal__new-item button {
+    width: 50%;
+}
+
+.modal__new-item .price {
+    display: inline-block;
+    margin: 0.5rem;
+    width: 2rem;
+}
+
+.price-section {
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
   
 .modal__upload-img {

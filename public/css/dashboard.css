@@ -46,7 +46,9 @@
 
 .sidebar-text {
     display: none;
+    left: 30%;
     opacity: 0;
+    position: absolute;
 }
 
 .sidebar__bottom-buttons {
@@ -83,7 +85,6 @@
 
 
 .display {
-    height: 100%;
     margin-left: 7%;
     padding-bottom: 2rem;
 }
