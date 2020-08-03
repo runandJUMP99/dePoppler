@@ -24,10 +24,6 @@ body {
     color: #e4a3d4;
 }
 
-.header-navbar {
-  background: #fce2db;
-}
-
 .newEntryForm {
   background: #fce2db;
   text-align: center;
@@ -36,10 +32,6 @@ body {
 
 .newEntryForm__header {
   color: #e4a3d4;
-}
-
-.pages {
-  text-align: center;
 }
 
 

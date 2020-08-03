@@ -1,0 +1,28 @@
+<%- include("partials/header.ejs") %>
+  
+<%- include("partials/sidebar.ejs") %>
+
+<div class="display">
+    <div class="display__welcome">
+        <h2>Hello, Steven </h2>
+        <p>Here's how your money is looking.</p>
+    </div>
+
+    <div class="report">
+        <h3>Sales By Group:</h3>
+        <p>Shirts: $<%= data[0].shirts %></p>
+        <p>Pants: $<%= data[0].pants %></p>
+        <p>Shoes: $<%= data[0].shoes %></p>
+        <p>Other: $<%= data[0].other %></p>
+    </div>
+
+    <div class="report">
+        <h3>Average Price Sold By Group:</h3>
+        <p>Shirts: $<%= data[1].shirts %></p>
+        <p>Pants: $<%= data[1].pants %></p>
+        <p>Shoes: $<%= data[1].shoes %></p>
+        <p>Other: $<%= data[1].other %></p>
+    </div>
+</div>
+    
+<%- include("partials/footer.ejs") %>

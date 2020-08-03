@@ -10,58 +10,8 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const passportLocalMongoose = require ("passport-local-mongoose");
 const session = require("express-session"); 
-const usps = require('usps-web-tools-node-sdk');
-usps.configure({ userID: '349RUNAN2685' });
-
-
-// usps.rateCalculator.intlRate({
-//     package: [
-//         { pounds: '15',
-//           ounces: '0',
-//           machinable: true,
-//           mailType: 'Package',
-//           gxg: { poBoxFlag: 'Y',
-//                  giftFlag: 'Y' },
-//           valueOfContents: '200',
-//           country: 'Australia',
-//           container: 'RECTANGULAR',
-//           size: 'LARGE',
-//           width: '10',
-//           length: '15',
-//           height: '10',
-//           girth: '0',
-//           originZip: '18701',
-//           commercialFlag: 'N',
-//           acceptanceDateTime: '2020-07-22T13:15:00-06:00',
-//           destinationPostalCode: '2046' },
-//         { pounds: '0',
-//           ounces: '3',
-//           mailType: 'Envelope',
-//           valueOfContents: '75',
-//           country: 'Algeria',
-//           container: '',
-//           size: 'REGULAR',
-//           width: '',
-//           length: '',
-//           height: '',
-//           girth: '',
-//           originZip: '',
-//           commercialFlag: 'N',
-//           extraServices: ['6'] }
-//       ],
-//     revision: ['2']
-// },
-//     function (error, response) {
-//         if (error) {
-//         // if there's a problem, the error object won't be null
-//         console.log(error);
-//         } else {
-//         // otherwise, you'll get a response object
-//         console.log(response.package[0].service);
-//         console.log(response.package[0].error);
-//         }
-//     }
-// );
+// const usps = require('usps-web-tools-node-sdk');
+// usps.configure({ userID: '349RUNAN2685' });
 
 let callbackURL = "http://localhost:3000/auth/"
 let port = process.env.PORT;
@@ -227,42 +177,55 @@ app.get("/dashboard", function(req, res) {
 
                 let pointerClassGross;
                 let pointerColorGross;
+                let percentageGross;
                 let pointerClassNet;
                 let pointerColorNet;
+                let percentageNet;
                 let pointerClassSales;
                 let pointerColorSales;
+                let percentageSales;
+
 
                 if (totals.gross > dummyLastWeeksSales.gross) {
                     pointerClassGross = "fas fa-hand-point-up";
                     pointerColorGross = "color: #3be43b;";
+                    percentageGross = "+" + (((totals.gross - dummyLastWeeksSales.gross) / dummyLastWeeksSales.gross) * 100).toFixed(2);
                 } else {
                     pointerClassGross = "fas fa-hand-point-down";
-                    pointerColorGross = "color: #fc6f6f;";      
+                    pointerColorGross = "color: #fc6f6f;";
+                    percentageGross = "-" + (((dummyLastWeeksSales.gross - totals.gross) / dummyLastWeeksSales.gross) * 100).toFixed(2);      
                 }
                 
                 if (totals.net > dummyLastWeeksSales.net) {
                     pointerClassNet = "fas fa-hand-point-up";
                     pointerColorNet = "color: #3be43b;";
+                    percentageNet = "+" + (((totals.net - dummyLastWeeksSales.net) / dummyLastWeeksSales.net) * 100).toFixed(2);
                 } else {
                     pointerClassNet = "fas fa-hand-point-down";
                     pointerColorNet = "color: #fc6f6f;";
+                    percentageNet = "-" + (((dummyLastWeeksSales.net - totals.net) / dummyLastWeeksSales.net) * 100).toFixed(2);      
                 }
                 
                 if (count.sold > dummyLastWeeksSales.sales) {
                     pointerClassSales = "fas fa-hand-point-up";
                     pointerColorSales = "color: #3be43b;";
+                    percentageSales = "+" + (((totals.sales - dummyLastWeeksSales.sales) / dummyLastWeeksSales.sales) * 100).toFixed(2);
                 } else {
                     pointerClassSales = "fas fa-hand-point-down";
                     pointerColorSales = "color: #fc6f6f;";
+                    percentageSales = "-" + (((dummyLastWeeksSales.sales - count.sold) / dummyLastWeeksSales.sales) * 100).toFixed(2);      
                 }
 
                 const styles = {
                     pointerClassGross: pointerClassGross,
                     pointerColorGross: pointerColorGross,
+                    percentageGross: percentageGross,
                     pointerClassNet: pointerClassNet,
                     pointerColorNet: pointerColorNet,
+                    percentageNet: percentageNet,
                     pointerClassSales: pointerClassSales,
-                    pointerColorSales: pointerColorSales
+                    pointerColorSales: pointerColorSales,
+                    percentageSales: percentageSales
                 };
 
                 const data = [foundUser, count, totals, salesByGroup, styles];
@@ -280,6 +243,70 @@ app.get("/login", function(req, res) {
 app.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/login");
+});
+
+app.get("/money", function(req, res) {
+    User.findById(req.user.id, function(err, foundUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                const totals = {
+                    shirts: 0,
+                    pants: 0,
+                    shoes: 0,
+                    other: 0
+                };
+                const count = {
+                    shirts: 0,
+                    pants: 0,
+                    shoes: 0,
+                    other: 0
+                };
+
+                foundUser.items.forEach(item => {
+                    if (item.status === "sold") {                        
+                        if (item.group === "Shirts") {
+                            totals.shirts += item.price;
+                            count.shirts++;
+                        } else if (item.group === "Pants") {
+                            totals.pants += item.price;
+                            count.pants++;
+                        } else if (item.group === "Shoes") {
+                            totals.shoes += item.price;
+                            count.shoes++;
+                        } else if (item.group === "Other") {
+                            totals.other += item.price;
+                            count.other++;
+                        }
+                    }
+                });
+
+                const averages = {
+                    shirts: totals.shirts / count.shirts,
+                    pants: totals.pants / count.pants,
+                    shoes: totals.shoes / count.shoes,
+                    other: totals.other / count.other
+                };
+
+                for (const total in totals) {
+                    totals[total] = totals[total].toFixed(2);
+                }
+                
+                for (const average in averages) {
+                    if (averages[average]) {
+                        averages[average] = averages[average].toFixed(2);
+                    } else {
+                        averages[average] = "0.00";
+                    }
+                }
+                
+                const data = [totals, averages];
+
+                res.render("money", {data: data});
+            }
+        }
+    });
 });
 
 app.get("/register", function(req, res) {
@@ -404,7 +431,7 @@ app.post("/change", function(req, res) {
             }
         });
 
-        res.redirect("/closet");
+        res.redirect(moveItem);
     } 
 });
 
@@ -469,6 +496,20 @@ app.post("/upload", function(req, res) {
     res.redirect("/closet");
 });
 
+
+// LISTEN
+
+
 app.listen(port, function() {
     console.log("Server started successfully");
 });
+
+// TOPS
+// BOTTOMS
+// OUTERWEAR
+// SHOES
+// ACCESSORIES
+// DRESSES
+// OTHER
+
+// DEPOP SHIPPING VS USPS SHIPPING COSTS
