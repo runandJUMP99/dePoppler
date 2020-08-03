@@ -27,10 +27,14 @@
     z-index: 10;
 }
 
+.modal__new-item label {
+    align-self: flex-start;
+    margin: 0.25rem 0;
+}
+
 .modal__new-item select,
-.modal__new-item input,
-.modal__new-item button {
-    margin: 0.5rem auto;
+.modal__new-item__name {
+    margin: 0 auto 0.5rem;
     width: 100%;
 }
 
@@ -38,18 +42,6 @@
     width: 50%;
 }
 
-.modal__new-item .price {
-    display: inline-block;
-    margin: 0.5rem;
-    width: 2rem;
-}
-
-.price-section {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-  
 .modal__upload-img {
     background: white;
     border: solid 1px #ccc;
@@ -64,7 +56,28 @@
     width: 70%;
     z-index: 10;
 }
-  
+
+.price-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price-section__money {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-section__money__inputs {
+    align-items: center;
+    display: flex;
+}
+
+.price {
+    display: inline-block;
+    margin: 0 0.5rem;
+    width: 2rem;
+}
+
 .open {
     display: inline-block !important;
     opacity: 1;

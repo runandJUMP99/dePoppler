@@ -104,16 +104,13 @@ const userSchema = new mongoose.Schema({
         img: String,
         name: String,
         price: Number,
+        cost: Number,
         status: String
     }],
-    sales: {
-        firstGroup: Number,
-        secondGroup: Number,
-        thirdGroup: Number
-    },
-    money: {
+    lastWeeksSales: {
+        sales: Number,
         salesGross: Number,
-        salesCost: Number
+        salesNet: Number
     }
 });
 
@@ -208,7 +205,8 @@ app.get("/dashboard", function(req, res) {
                     } else if (item.status === "sold") {
                         count.sold++;
                         
-                        totals.gross = totals.gross + item.price;
+                        totals.gross += parseFloat(item.price.toFixed(2));
+                        totals.net += parseFloat((item.price - item.cost).toFixed(2));
 
                         if (item.group === "Shirts") {
                             salesByGroup.shirts++;
@@ -220,7 +218,54 @@ app.get("/dashboard", function(req, res) {
                     }
                 });
 
-                const data = [foundUser, count, totals, salesByGroup];
+                // DUMMY DATA
+                const dummyLastWeeksSales = {
+                    gross: 500,
+                    net: 420,
+                    sales: 10
+                };
+
+                let pointerClassGross;
+                let pointerColorGross;
+                let pointerClassNet;
+                let pointerColorNet;
+                let pointerClassSales;
+                let pointerColorSales;
+
+                if (totals.gross > dummyLastWeeksSales.gross) {
+                    pointerClassGross = "fas fa-hand-point-up";
+                    pointerColorGross = "color: #3be43b;";
+                } else {
+                    pointerClassGross = "fas fa-hand-point-down";
+                    pointerColorGross = "color: #fc6f6f;";      
+                }
+                
+                if (totals.net > dummyLastWeeksSales.net) {
+                    pointerClassNet = "fas fa-hand-point-up";
+                    pointerColorNet = "color: #3be43b;";
+                } else {
+                    pointerClassNet = "fas fa-hand-point-down";
+                    pointerColorNet = "color: #fc6f6f;";
+                }
+                
+                if (count.sold > dummyLastWeeksSales.sales) {
+                    pointerClassSales = "fas fa-hand-point-up";
+                    pointerColorSales = "color: #3be43b;";
+                } else {
+                    pointerClassSales = "fas fa-hand-point-down";
+                    pointerColorSales = "color: #fc6f6f;";
+                }
+
+                const styles = {
+                    pointerClassGross: pointerClassGross,
+                    pointerColorGross: pointerColorGross,
+                    pointerClassNet: pointerClassNet,
+                    pointerColorNet: pointerColorNet,
+                    pointerClassSales: pointerClassSales,
+                    pointerColorSales: pointerColorSales
+                };
+
+                const data = [foundUser, count, totals, salesByGroup, styles];
 
                 res.render("dashboard", {data: data});
             }
@@ -302,14 +347,18 @@ app.get("/:status", function(req, res) {
 app.post("/", function(req, res) {
     const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
+    const costDollars = parseInt(req.body.costDollars);
+    const costCents = parseFloat(req.body.costCents) / 100;
+    const cost = (costDollars + costCents).toFixed(2);
     const priceDollars = parseInt(req.body.priceDollars);
-    const priceCents = parseFloat(req.body.priceCents / 100);
+    const priceCents = parseFloat(req.body.priceCents) / 100;
     const price = (priceDollars + priceCents).toFixed(2);
         
     if (newItem) {
         const item = {
             group: group,
             name: newItem,
+            cost: cost,
             price: price,
             status: "closet",
         };

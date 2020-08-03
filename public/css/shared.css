@@ -11,7 +11,7 @@ body {
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
     color: white;
     font-weight: bold;
-    margin: 0.5rem auto;
+    margin: 1rem auto;
     padding: 0.5rem 1rem;
     transition: all 0.2s ease-out;
     width: 100%;
@@ -65,10 +65,9 @@ body {
   border-radius: 0.5rem;
   box-shadow: 0 0 4px 1px #66666680 inset;
   display: flex;
-  height: 10rem;
   justify-content: space-between;
   margin: 1rem;
-  padding: 7rem 1.5rem;
+  padding: 1.5rem;
   position: relative;
   width: 18rem;
 }

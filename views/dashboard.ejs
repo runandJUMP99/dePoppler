@@ -15,21 +15,21 @@
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Sales: </h6>
-                    <p><i class="fas fa-hand-point-up"></i> +25.75%</p>
+                    <p style="<%= data[4].pointerColorSales %>"><i class="<%= data[4].pointerClassSales %>"></i> +25.75%</p>
                 </div>
                 <h4><%= data[1].sold %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Gross: </h6>
-                    <p><i class="fas fa-hand-point-up"></i> +15.30%</p>
+                    <p style="<%= data[4].pointerColorGross %>"><i class="<%= data[4].pointerClassGross %>"></i> +15.30%</p>
                 </div>
                 <h4>$<%= data[2].gross %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Net: </h6>
-                    <p><i class="fas fa-hand-point-up"></i> +5.34%</p>
+                    <p style="<%= data[4].pointerColorNet %>"><i class="<%= data[4].pointerClassNet %>"></i> +5.34%</p>
                 </div>
                 <h4>$<%= data[2].net %></h4>
             </div>
