@@ -257,6 +257,12 @@ app.get("/money", function(req, res) {
                     shoes: 0,
                     other: 0
                 };
+                const cost = {
+                    shirts: 0,
+                    pants: 0,
+                    shoes: 0,
+                    other: 0
+                };
                 const count = {
                     shirts: 0,
                     pants: 0,
@@ -265,22 +271,33 @@ app.get("/money", function(req, res) {
                 };
 
                 foundUser.items.forEach(item => {
-                    if (item.status === "sold") {                        
+                    if (item.status === "sold") {  
                         if (item.group === "Shirts") {
                             totals.shirts += item.price;
+                            cost.shirts += item.cost;
                             count.shirts++;
                         } else if (item.group === "Pants") {
                             totals.pants += item.price;
+                            cost.pants += item.cost;
                             count.pants++;
                         } else if (item.group === "Shoes") {
                             totals.shoes += item.price;
+                            cost.shoes += item.cost;
                             count.shoes++;
                         } else if (item.group === "Other") {
                             totals.other += item.price;
+                            cost.other += item.cost;
                             count.other++;
                         }
                     }
                 });
+
+                const nets = {
+                    shirts: totals.shirts - cost.shirts,
+                    pants: totals.pants - cost.pants,
+                    shoes: totals.shoes - cost.shoes,
+                    other: totals.other - cost.other
+                };
 
                 const averages = {
                     shirts: totals.shirts / count.shirts,
@@ -293,6 +310,10 @@ app.get("/money", function(req, res) {
                     totals[total] = totals[total].toFixed(2);
                 }
                 
+                for (const net in nets) {
+                    nets[net] = nets[net].toFixed(2);
+                }
+                
                 for (const average in averages) {
                     if (averages[average]) {
                         averages[average] = averages[average].toFixed(2);
@@ -300,8 +321,7 @@ app.get("/money", function(req, res) {
                         averages[average] = "0.00";
                     }
                 }
-                
-                const data = [totals, averages];
+                const data = [totals, nets, averages];
 
                 res.render("money", {data: data});
             }

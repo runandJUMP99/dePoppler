@@ -8,20 +8,60 @@
         <p>Here's how your money is looking.</p>
     </div>
 
-    <div class="report">
-        <h3>Sales By Group:</h3>
-        <p>Shirts: $<%= data[0].shirts %></p>
-        <p>Pants: $<%= data[0].pants %></p>
-        <p>Shoes: $<%= data[0].shoes %></p>
-        <p>Other: $<%= data[0].other %></p>
-    </div>
-
-    <div class="report">
-        <h3>Average Price Sold By Group:</h3>
-        <p>Shirts: $<%= data[1].shirts %></p>
-        <p>Pants: $<%= data[1].pants %></p>
-        <p>Shoes: $<%= data[1].shoes %></p>
-        <p>Other: $<%= data[1].other %></p>
+    <div class="money-reports">
+        <div class="money-report">
+            <h4>Sales By Group (Gross):</h4>
+            <div class="money-report__reports">
+                <div>        
+                    <h6>Shirts: </h6><p>$<%= data[0].shirts %></p>
+                </div>
+                <div>
+                    <h6>Pants: </h6><p>$<%= data[0].pants %></p>
+                </div>
+                <div>
+                    <h6>Shoes: </h6><p>$<%= data[0].shoes %></p>
+                </div>
+                <div>
+                    <h6>Other: </h6><p>$<%= data[0].other %></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="money-report">
+            <h4>Sales By Group (Net):</h4>
+            <div class="money-report__reports">
+                <div>        
+                    <h6>Shirts: </h6><p>$<%= data[1].shirts %></p>
+                </div>
+                <div>
+                    <h6>Pants: </h6><p>$<%= data[1].pants %></p>
+                </div>
+                <div>
+                    <h6>Shoes: </h6><p>$<%= data[1].shoes %></p>
+                </div>
+                <div>
+                    <h6>Other: </h6><p>$<%= data[1].other %></p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="money-report">
+            <h4>Average Price By Group:</h4>
+            <div class="money-report__reports">
+                <div>        
+                    <h6>Shirts: </h6><p>$<%= data[2].shirts %></p>
+                </div>
+                <div>
+                    <h6>Pants: </h6><p>$<%= data[2].pants %></p>
+                </div>
+                <div>
+                    <h6>Shoes: </h6><p>$<%= data[2].shoes %></p>
+                </div>
+                <div>
+                    <h6>Other: </h6><p>$<%= data[2].other %></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
     
