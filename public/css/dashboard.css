@@ -1,39 +1,18 @@
 /* SIDEBAR */
 
+
 .sidebar {
     background: #e4a3d4;
     box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     justify-content: space-between;
     left: 0;
     position: fixed;
     transition: all 0.5s ease-out;
     width: 4rem;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0 0 4rem;
-}
-
-.sidebar a {
-    border-radius: 32px;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
-    color: white;
-    display: block;
-    margin: 0.7rem auto;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    transition: all 0.2s ease-out;
-    width: 80%;
-}
-
-.sidebar a:hover {
-    background: #d68ec4;
-    cursor: pointer;
-    font-weight: bold;
+    z-index: 15;
 }
 
 .sidebar-logo {
@@ -42,6 +21,46 @@
     margin: 0 auto;
     padding: 1rem 0 2rem;
     width: 80%;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0 0 4rem;
+}
+
+.sidebar__link,
+.add-item-button {
+    border-radius: 32px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
+    color: white;
+    display: block;
+    margin: 0.7rem auto;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+    width: 80%;
+}
+
+.sidebar__link:hover {
+    background: #d68ec4;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-item-button {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    width: 100%;
+}
+
+.add-item-button:hover,
+.add-item-button:active {
+    background: white;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.5);
+    color: #e4a3d4;
 }
 
 .sidebar-text {
@@ -80,12 +99,16 @@
     width: 15rem !important;
 }
 
+.text-align-left {
+    text-align: left;
+}
+
 
 /* DISPLAY */
 
 
 .display {
-    margin-left: 7%;
+    margin-left: 4rem;
     padding-bottom: 2rem;
 }
 
@@ -94,12 +117,14 @@
     url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/cliffs-1846886_1920.jpg?alt=media&token=7d680130-dbc7-4ff2-8577-6f2bb35fe6c4") center/cover no-repeat border-box, #e4a3d4;
     color: white;
     padding: 4rem 3rem;
+    text-align: center;
     width: 100%;
 }
 
 .display__top {
     align-items: center;
     display: flex;
+    flex-direction: column-reverse;
     justify-content: space-evenly;
     padding: 3rem 0;
 }
@@ -182,6 +207,7 @@
     border-radius: 16px;
     box-shadow: 0 0 4px 1px #66666680 inset;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     margin: 0 9%;
     padding: 3rem 0;
@@ -211,6 +237,11 @@
         width: 20%;
     }
 
+    .sidebar__link,
+    .add-item-button {
+        text-align: left;
+    }
+
     .sidebar-text {
         display: initial;
         opacity: 1;
@@ -218,6 +249,22 @@
 
     .expand {
         display: none;
+    }
+}
+
+@media (min-width: 700px)  {
+    .display__top {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 575px) {
+    .display__welcome {
+        text-align: left;
+    }
+
+    .items-counter {
+        flex-direction: row;
     }
 }
 
