@@ -30,13 +30,14 @@
 
             <% foundItems.foundItems.forEach(function(item) { %>
         
-            <form class="item" action="/change" method="post">
+            <form class="item" action="/change" method="POST">
                 <div class="item__display">
                     <div class="item-img-container">
                         <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                        <img src="<%= item.img %>" alt="">
+                        <!-- <img src="<%= item.img %>" alt=""> -->
+                        <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="">
                     </div>
-                    <button name="moveItem" value="sold" class="item__sold">$ SOLD $</button>
+                    <button class="item__sold" name="moveItem" value="sold">MARK AS SOLD <span>$</span></button>
                 </div>
                 <div class="item-info">
                     <div class="item-info__top">

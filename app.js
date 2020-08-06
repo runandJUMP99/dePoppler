@@ -372,6 +372,23 @@ app.get("/:status", function(req, res) {
                     return item.status == status;
                 });
 
+                foundItems = foundItems.map(item=> {
+                    let name = item.name;
+                    
+                    if (name.length > 10) {
+                        name = name.substring(0, 10) + " ...";
+                    }
+
+                    return {
+                        id: item._id,
+                        group: item.group,
+                        name: name,
+                        cost: item.cost,
+                        price: item.price,
+                        status: item.status
+                    };
+                });
+
                 foundItems = {
                     foundItems: foundItems,
                     button1: button1,

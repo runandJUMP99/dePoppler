@@ -72,6 +72,7 @@
 .modal__new-item button {
     background: #e4a3d4;
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
+    color: white;
     text-align: center;
     width: 50%;
 }
