@@ -102,7 +102,7 @@ function(accessToken, refreshToken, profile, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: callbackURL + "google/dashboard"
+    callbackURL: callbackURL + "google/home"
 },
 function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({name: profile.name.givenName, socialId: profile.id, username: profile.id}, function(err, user) {
