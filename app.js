@@ -19,7 +19,7 @@ let port = process.env.PORT;
 if (port == null || port == "") {
     port = 3000;
 } else {
-    callbackURL = "https://secret-sea-49678.herokuapp.com/auth/"
+    callbackURL = "http://secret-sea-49678.herokuapp.com/auth/"
 }
 
 const app = express();
@@ -41,7 +41,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(`mongodb+srv://runandJUMP:${process.env.PASSWORD}@depoppler-xznul.mongodb.net/dePoppler?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+mongoose.connect(`mongodb+srv://runandJUMP:${process.env.PASSWORD}@depoppler-xznul.mongodb.net/dePoppler?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+    .then(() => console.log("Connected"))
+    .catch(err => console.log("Caught", err.stack));
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
@@ -175,6 +177,10 @@ app.get("/dashboard", function(req, res) {
                     sales: 10
                 };
 
+
+                //SETTING POINTER COLOR, DIRECTION AND VALUE
+
+
                 let pointerClassGross;
                 let pointerColorGross;
                 let percentageGross;
@@ -227,6 +233,17 @@ app.get("/dashboard", function(req, res) {
                     pointerColorSales: pointerColorSales,
                     percentageSales: percentageSales
                 };
+
+
+                //SETTING GRAPH BAR HEIGHTS
+                
+
+                const mostSales = Object.keys(salesByGroup).reduce((a, b) => salesByGroup[a] > salesByGroup[b] ? a : b);
+                
+                salesByGroup.shirtsPercentage = Math.floor((salesByGroup.shirts / salesByGroup[mostSales]) * 100);
+                salesByGroup.pantsPercentage = Math.floor((salesByGroup.pants / salesByGroup[mostSales]) * 100);
+                salesByGroup.shoesPercentage = Math.floor((salesByGroup.shoes / salesByGroup[mostSales]) * 100);
+
 
                 const data = [foundUser, count, totals, salesByGroup, styles];
 

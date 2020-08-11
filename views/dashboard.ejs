@@ -39,10 +39,16 @@
             <div>
                 <h3>Sales By Group</h3>
             </div>
-            <div class="graph">
-                <div class="graph__bar" style="height: <%= data[3].shirts %>rem;"></div>
-                <div class="graph__bar" style="height: <%= data[3].pants %>rem;"></div>
-                <div class="graph__bar" style="height: <%= data[3].shoes %>rem;"></div>
+            <div id="graph">
+                <div class="graph__bar" style="height: <%= data[3].shirtsPercentage %>%;">
+                    <p> <%= data[3].shirts %> </p>
+                </div>
+                <div class="graph__bar" style="height: <%= data[3].pantsPercentage %>%;">
+                    <p> <%= data[3].pants %> </p>
+                </div>
+                <div class="graph__bar" style="height: <%= data[3].shoesPercentage %>%;">
+                    <p> <%= data[3].shoes %> </p>
+                </div>
             </div>
             <div class="groups">
                 <p>Shirts</p>

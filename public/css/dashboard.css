@@ -136,6 +136,9 @@
 }
 
 .reports-section {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
     width: 100%;
 }
 
@@ -147,7 +150,6 @@
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;
-    margin-right: 0.5rem;
     padding: 1.5rem 2rem;
     transition: all 0.2s ease-out;
 }
@@ -186,19 +188,30 @@
     width: 100%;
 }
 
-.graph {
+#graph {
     border-bottom: 2px solid black;
     border-left: 2px solid black;
     display: flex;
     height: 15rem;
     justify-content: space-around;
-    margin-left: 0.5rem;
+    padding-top: 1rem;
+    position: relative;
 }
 
 .graph__bar {
     align-self: flex-end;
     background: #c295d8;
+    border-radius: 16px 16px 0 0;
+    transition: all 0.2s ease-out;
     width: 2rem;
+}
+
+.graph__bar p {
+    color: white;
+}
+
+.graph__bar:hover {
+    background: #e4a3d4;
 }
 
 .groups {
@@ -267,6 +280,23 @@
     .display__top {
         flex-direction: row;
         justify-content: space-between;
+    }
+
+    .reports-section {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 1rem;
+    }
+
+    .report {
+        margin: 0;
+    }
+
+    .graph-section {
+        align-self: stretch;
+        margin-left: 1rem;
     }
 }
 
