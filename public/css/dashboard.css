@@ -15,12 +15,18 @@
     z-index: 15;
 }
 
-.sidebar-logo {
+.sidebar-logo,
+.sidebar-logo__expand {
     color: white;
     font-size: 2rem;
     margin: 0 auto;
     padding: 1rem 0 2rem;
+    text-align: center;
     width: 80%;
+}
+
+.sidebar-logo__expand {
+    display: none;
 }
 
 .sidebar ul {
@@ -52,6 +58,7 @@
 .add-item-button {
     background: white;
     border: none;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
     color: #e4a3d4;
     font-weight: bold;
     width: 100%;
@@ -208,6 +215,8 @@
 
 .graph__bar p {
     color: white;
+    font-weight: bold;
+    padding-top: 0.4rem;
 }
 
 .graph__bar:hover {
@@ -259,6 +268,14 @@
 
     .sidebar {
         width: 20%;
+    }
+
+    .sidebar-logo {
+        display: none;
+    }
+    
+    .sidebar-logo__expand {
+        display: block;
     }
 
     .sidebar__link,

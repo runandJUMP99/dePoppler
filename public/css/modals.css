@@ -29,7 +29,7 @@
     padding: 1rem;
     position: fixed;
     text-align: center;
-    top: 10%;
+    top: 5%;
     transform: translate(-50%, -200%);
     transition: all 0.5s ease-out;
     width: 90%;
@@ -81,6 +81,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    margin-bottom: 0.5rem;
 }
 
 .price-section__money {
@@ -100,23 +101,8 @@
     width: 3rem !important;
 }
 
-
-/* UPLOAD IMG MODAL */
-
-
-.modal__upload-img {
-    background: white;
-    border: solid 1px #ccc;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-    display: none;
-    left: 50%;
-    padding: 1rem;
-    position: fixed;
-    text-align: center;
-    top: 20%;
-    transform: translate(-50%, 0);
-    width: 70%;
-    z-index: 10;
+.file-upload {
+    margin-bottom: 1rem;
 }
 
 .open {
@@ -139,6 +125,7 @@
 @media (min-width: 690px) {
     .modal__new-item {
         padding: 1rem 6rem;
+        top: 10%;
         width: 70%;
     }
 }

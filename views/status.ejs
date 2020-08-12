@@ -2,7 +2,7 @@
 
 <%- include("partials/sidebar.ejs") %>
 
-    <div class="modal__upload-img">
+    <!-- <div class="modal__upload-img">
         <h1 class="newEntryForm__header">upload image</h1>
         <form action="/upload" method="post" enctype="multipart/form-data">
             <select name="itemSelected">
@@ -17,7 +17,7 @@
             <input type="file"name="file">
             <input type="submit" value="upload"></input>
         </form>
-    </div>
+    </div> -->
 
     <div class="display">
 
@@ -35,7 +35,7 @@
                     <div class="item-img-container">
                         <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
                         <!-- <img src="<%= item.img %>" alt=""> -->
-                        <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="">
+                        <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="Item Image">
                     </div>
                     <button class="item__sold" name="moveItem" value="sold">MARK AS SOLD <span>$</span></button>
                 </div>

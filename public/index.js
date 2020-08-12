@@ -1,16 +1,12 @@
 // MODALS
 
 
-$(".item-img-container").on("click", function() {
-    $(".backdrop").addClass("open");
-    $(".backdrop").addClass("modal__backdrop");
-    $(".modal__upload-img").addClass("open");
+$(".item").on("click", function() {
+    openItemModal();
 });
 
 $(".add-item-button").on("click", function() {
-    $(".backdrop").addClass("open");
-    $(".backdrop").addClass("modal__backdrop");
-    $(".modal__new-item").addClass("modal__open");
+    openItemModal();
 });
 
 $(".backdrop").on("click", function() {
@@ -25,6 +21,12 @@ $(".backdrop").on("click", function() {
     $(".add-item-button").removeClass("text-align-left");
 });
 
+function openItemModal() {
+    $(".backdrop").addClass("open");
+    $(".backdrop").addClass("modal__backdrop");
+    $(".modal__new-item").addClass("modal__open");
+}
+
 
 //SIDEBAR
 
@@ -33,16 +35,21 @@ $(".expand").on("click", function() {
     if ($(".sidebar").hasClass("sidebar__expand")) {
         $(".backdrop").removeClass("open");
         $(".sidebar").removeClass("sidebar__expand");
-        $(".expand").html("<i class='fas fa-angle-right'></i>");
         $(".sidebar-text").removeClass("open");
         $(".sidebar__link").removeClass("text-align-left");
         $(".add-item-button").removeClass("text-align-left");
+        $(".expand").html("<i class='fas fa-angle-right'></i>");
+        $(".sidebar-logo").html("dP");
     } else {
         $(".backdrop").addClass("open");
         $(".sidebar").addClass("sidebar__expand");
-        $(".expand").html("<i class='fas fa-angle-left'></i>");
         $(".sidebar-text").addClass("open");
         $(".sidebar__link").addClass("text-align-left");
         $(".add-item-button").addClass("text-align-left");
+        $(".expand").html("<i class='fas fa-angle-left'></i>");
+        
+        setTimeout(() => {
+            $(".sidebar-logo").html("dePoppler");
+        }, 500);
     }
 });

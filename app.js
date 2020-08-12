@@ -10,8 +10,6 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const passportLocalMongoose = require ("passport-local-mongoose");
 const session = require("express-session"); 
-// const usps = require('usps-web-tools-node-sdk');
-// usps.configure({ userID: '349RUNAN2685' });
 
 let callbackURL = "http://localhost:3000/auth/"
 let port = process.env.PORT;
@@ -131,24 +129,24 @@ app.get("/dashboard", function(req, res) {
             console.log(err);
         } else {
             if (foundUser) {
-                const count = {
+                const count = { //count for each item per section
                     closet: 0,
                     photod: 0,
                     listed: 0,
                     sold: 0
                 };
-                const totals = {
+                const totals = { //totals for sold items
                     gross: 0,
                     net: 0
                 };
-                const salesByGroup = {
+                const salesByGroup = { //count for each item sold by group
                     shirts: 0,
                     pants: 0,
                     shoes: 0
                 }
 
                 foundUser.items.forEach(item => {
-                    if (item.status === "closet") {
+                    if (item.status === "closet") { //increase each item by 1 per section
                         count.closet++;
                     } else if (item.status === "photod") {
                         count.photod++;
@@ -157,10 +155,11 @@ app.get("/dashboard", function(req, res) {
                     } else if (item.status === "sold") {
                         count.sold++;
                         
-                        totals.gross += parseFloat(item.price.toFixed(2));
-                        totals.net += parseFloat((item.price - item.cost).toFixed(2));
+                        //sum each item for sold items
+                        totals.gross += parseFloat(item.price); 
+                        totals.net += parseFloat((item.price - item.cost));
 
-                        if (item.group === "Shirts") {
+                        if (item.group === "Shirts") { //increase each item by 1 per group for sold items
                             salesByGroup.shirts++;
                         } else if (item.group === "Pants") {
                             salesByGroup.pants++;
@@ -169,6 +168,11 @@ app.get("/dashboard", function(req, res) {
                         }
                     }
                 });
+
+                //SET EACH TOTAL TO TWO DECIMAL PLACES
+                totals.gross = totals.gross.toFixed(2);
+                totals.net = totals.net.toFixed(2);
+
 
                 // DUMMY DATA
                 const dummyLastWeeksSales = {
@@ -370,14 +374,17 @@ app.get("/:status", function(req, res) {
         class1 = "fas fa-door-closed";
         class2 = "fas fa-store";
         greeting = "These are items you have photo'd."
-    } else if (status === "listed") {
+    } else if (status === "listed" || status === "sold") {
         button1 = "closet";
         button2 = "photod";
         class1 = "fas fa-door-closed";
         class2 = "fas fa-camera-retro";
-        greeting = "These are items you have list'd"
-    } else if (status === "sold") {
-        greeting = "Congrats on these sales!"
+
+        if (status === "listed") {
+            greeting = "These are items you have list'd";
+        } else {
+            greeting = "Congrats on these sales!";
+        }
     }
 
     User.findById(req.user.id, function(err, foundUser) {
@@ -435,7 +442,7 @@ app.post("/", function(req, res) {
     const priceCents = parseFloat(req.body.priceCents) / 100;
     const price = (priceDollars + priceCents).toFixed(2);
         
-    if (newItem) {
+    if (newItem !== "" && costDollars && costCents && priceDollars && priceCents) {
         const item = {
             group: group,
             name: newItem,
@@ -459,7 +466,7 @@ app.post("/", function(req, res) {
         });
 
     } else {
-        res.redirect("/");
+        res.redirect("/dashboard");
     }
 });
 
@@ -478,11 +485,11 @@ app.post("/change", function(req, res) {
             {"items._id": moveId}, 
             {"$set": {"items.$.status": moveItem}},
             function(err, foundUser) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("updated status-- "+ moveItem + " route");
-            }
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("updated status-- "+ moveItem + " route");
+                }
         });
 
         res.redirect(moveItem);
