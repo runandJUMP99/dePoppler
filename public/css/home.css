@@ -3,45 +3,17 @@ h4 {
     margin: 2rem 0;
 }
 
-/* NAVIGATION */
+/* JUMBOTRON */
 
-.main-nav ul,
-.main-nav__fixed ul {
-    align-items: center;
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-    margin: 0;
-    padding: 1rem;
-}
-
-.main-nav a,
-.main-nav__fixed__link {
-    color: black;
-    margin: 1rem 2rem;
-}
-
-.main-nav a:hover,
-.main-nav__fixed__link:hover {
-    color: #e4a3d4;
-    text-decoration: none;
-}
-
-.main-nav__fixed {
-    background: #fce2db;
-    box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.5);
-    position: fixed;
-    transform: translateY(-4rem);
-    transition: all 0.5s ease-in-out;
+.home__jumbotron {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, transparent), 
+    url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/store-984393_1920.jpg?alt=media&token=b794ab80-3a47-4297-8f66-9f47e478fd8d") center/cover no-repeat border-box, #e4a3d4;
+    padding: 8rem 0;
     width: 100%;
-    z-index: 10;
 }
 
-.main-nav__fixed__show {
-    transform: translateY(0);
-}
-
-.cta-button {
+.cta-button,
+.home__login {
     background: #e4a3d4;
     border: none;
     border-radius: 8px;
@@ -53,19 +25,22 @@ h4 {
 }
 
 .cta-button:hover,
-.cta-button:active {
+.cta-button:active,
+.home__login:hover,
+.home__login:active {
     background: white;
     color: #e4a3d4;
     text-decoration: none;
 }
 
-/* JUMBOTRON */
 
-.home__jumbotron {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, transparent), 
-    url("https://firebasestorage.googleapis.com/v0/b/depoppler.appspot.com/o/store-984393_1920.jpg?alt=media&token=b794ab80-3a47-4297-8f66-9f47e478fd8d") center/cover no-repeat border-box, #e4a3d4;
-    padding: 8rem 0;
-    width: 100%;
+.home__login {
+    font-size: 1rem;
+    font-weight: normal;
+    padding: 0.2rem 0.8rem;
+    position: absolute;
+    right: 2.5rem;
+    top: 1rem;
 }
 
 .jumbotron__text {
