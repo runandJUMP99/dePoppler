@@ -129,6 +129,8 @@ passport.authenticate("google", {
 );
 
 let errorMessage = "";
+let filterSelection = null;
+let status = null;
 
 app.get("/", function(req, res) {
     res.render("home");
@@ -375,7 +377,12 @@ app.get("/signup", function(req, res) {
 
 app.get("/:status", function(req, res) {
     errorMessage = "";
-    const status = req.params.status;
+    status = req.params.status;
+
+    console.log(req.params.status);
+
+    const currentStatus = req.params.status;
+    const currentFilterSelection = filterSelection;
     let button1;
     let button2;
     let class1;
@@ -407,47 +414,101 @@ app.get("/:status", function(req, res) {
         }
     }
 
-    User.findById(req.user.id, function(err, foundUser) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                let foundItems = foundUser.items.filter(item => {
-                    return item.status == status;
-                });
+    if (currentFilterSelection) {
+        User.findById(req.user.id, function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundUser) {
+                    console.log(currentStatus);
+                    let foundItems = foundUser.items.filter(item => {
+                        return item.status === currentStatus;
+                    });
 
-                foundItems = foundItems.map(item=> {
-                    let name = item.name;
-                    
-                    if (name.length > 10) {
-                        name = name.substring(0, 10) + " ...";
+                    console.log(foundItems);
+    
+                    foundItems = foundItems.map(item=> {
+                        let name = item.name;
+                        
+                        if (name.length > 10) {
+                            name = name.substring(0, 10) + " ...";
+                        }
+    
+                        if (item.group === currentFilterSelection) {
+                            console.log("if currentFilterSelection");
+                            return {
+                                id: item._id,
+                                group: item.group,
+                                name: name,
+                                cost: item.cost,
+                                price: item.price,
+                                status: item.status
+                            };
+                        } else {
+                            return;
+                        }
+                    });
+    
+                    foundItems = {
+                        foundItems: foundItems,
+                        button1: button1,
+                        button2: button2,
+                        class1: class1,
+                        class2: class2,
+                        greeting: greeting
                     }
-
-                    return {
-                        id: item._id,
-                        group: item.group,
-                        name: name,
-                        cost: item.cost,
-                        price: item.price,
-                        status: item.status
-                    };
-                });
-
-                foundItems = {
-                    foundItems: foundItems,
-                    button1: button1,
-                    button2: button2,
-                    class1: class1,
-                    class2: class2,
-                    greeting: greeting
+    
+                    const data = [foundUser, foundItems]
+    
+                    res.render("status", {data: data});
                 }
-
-                const data = [foundUser, foundItems]
-
-                res.render("status", {data: data});
             }
-        }
-    });
+        });
+    } else {
+        User.findById(req.user.id, function(err, foundUser) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundUser) {
+                    let foundItems = foundUser.items.filter(item => {
+                        return item.status === currentStatus;
+                    });
+    
+                    foundItems = foundItems.map(item=> {
+                        let name = item.name;
+                        
+                        if (name.length > 10) {
+                            name = name.substring(0, 10) + " ...";
+                        }
+
+                        return {
+                            id: item._id,
+                            group: item.group,
+                            name: name,
+                            cost: item.cost,
+                            price: item.price,
+                            status: item.status
+                        };
+                    });
+    
+                    foundItems = {
+                        foundItems: foundItems,
+                        button1: button1,
+                        button2: button2,
+                        class1: class1,
+                        class2: class2,
+                        greeting: greeting
+                    }
+    
+                    const data = [foundUser, foundItems]
+    
+                    res.render("status", {data: data});
+                }
+            }
+        });
+    }
+    filterSelection = null;
+
 });
 
 
@@ -517,6 +578,14 @@ app.post("/change", function(req, res) {
 
         res.redirect(moveItem);
     } 
+});
+
+app.post("/filter", function(req, res) {
+    filterSelection = req.body.filterSelection;
+
+    console.log(status);
+
+    res.redirect(status);
 });
 
 app.post("/login", function(req, res) {

@@ -52,45 +52,67 @@
 
         <div class="items-section">
 
-            <% data[1].foundItems.forEach(function(item) { %>
-        
-            <form class="item" action="/change" method="POST">
-                <div class="item__display">
-                    <div class="item-img-container">
-                        <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                        <!-- <img src="<%= item.img %>" alt=""> -->
-                        <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="Item Image">
-                    </div>
-                    <button class="item__sold" name="moveItem" value="sold">MARK AS SOLD <span>$</span></button>
-                </div>
-                <div class="item-info">
-                    <div class="item-info__top">
-                        <label class="item-name-label" for="itemName">Item Name:</label>
-                        <li class="item-name" name="itemName"> <%= item.name %> </li>
-                    </div>
-                    <div class="item-info__middle">
-                        <div>
-                            <label class="status-label" for="price">Category:</label>
-                            <li class="item-name" name="category"> <%= item.group %> </li>
-                        </div>
-                        <div>
-                            <label class="item-name-label" for="price">Price:</label>
-                            <li class="item-name" name="price">$<%= item.price %></li>
-                        </div>
-                    </div>
-                    <div class="move-to-section">
-                        <label class="item-name-label">Move To: </label>
-                        <div class="move-to-buttons">
-                            <button name="moveItem" value="<%= data[1].button1 %>"><i class="<%= data[1].class1 %>"></i></button>
-                            <button name="moveItem" value="<%= data[1].button2 %>"><i class="<%= data[1].class2 %>"></i></button>
-                            <button name="moveItem" value="delete"><i class="fas fa-trash"></i></button>
-                            <input type="hidden" name="moveId" value="<%= item.id %>">
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <div class="filter-toolbar">
+                <form action="/filter" method="post">
+                    <label for="group">Sort by: </label>
+                    <select name="filterSelection" id="group" onChange="submit()">
+                        <!-- <option disabled hidden>Tops</option> -->
 
-            <% }) %>
+                        <% data[0].groups.forEach(function(group) { %>
+                        
+                            <option value="<%= group %>"> <%= group %> </option>
+            
+                        <% }) %>
+            
+                    </select>
+                </form>
+            </div>
+
+            <div class="items-section__items">
+
+                <% data[1].foundItems.forEach(function(item) { %>
+        
+                    <form class="item" action="/change" method="POST">
+                        <div class="item__display">
+                            <div class="item-img-container">
+                                <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
+                                <!-- <img src="<%= item.img %>" alt=""> -->
+                                <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="Item Image">
+                            </div>
+                            <button class="item__sold" name="moveItem" value="sold">MARK AS SOLD <span>$</span></button>
+                        </div>
+                        <div class="item-info">
+                            <div class="item-info__top">
+                                <label class="item-name-label" for="itemName">Item Name:</label>
+                                <li class="item-name" name="itemName"> <%= item.name %> </li>
+                            </div>
+                            <div class="item-info__middle">
+                                <div>
+                                    <label class="status-label" for="price">Category:</label>
+                                    <li class="item-name" name="category"> <%= item.group %> </li>
+                                </div>
+                                <div>
+                                    <label class="item-name-label" for="price">Price:</label>
+                                    <li class="item-name" name="price">$<%= item.price %></li>
+                                </div>
+                            </div>
+                            <div class="move-to-section">
+                                <label class="item-name-label">Move To: </label>
+                                <div class="move-to-buttons">
+                                    <button name="moveItem" value="<%= data[1].button1 %>"><i class="<%= data[1].class1 %>"></i></button>
+                                    <button name="moveItem" value="<%= data[1].button2 %>"><i class="<%= data[1].class2 %>"></i></button>
+                                    <button name="moveItem" value="delete"><i class="fas fa-trash"></i></button>
+                                    <input type="hidden" name="moveId" value="<%= item.id %>">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+        
+                <% }) %>
+
+            </div>
+
+            
 
         </div>
     

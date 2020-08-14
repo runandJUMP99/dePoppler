@@ -9,7 +9,31 @@ body {
 /* CLOSET -- PHOTO'd -- LIST'd SECTIONS */
 
 
-.items-section {
+.filter-toolbar {
+  padding: 1rem;
+}
+
+.filter-toolbar label {
+  font-weight: bold;
+  margin: 0.25rem 0;
+  margin-right: 1rem;
+}
+
+.filter-toolbar select {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font: inherit;
+  outline: none;
+  padding: 6px 10px;
+}
+
+.filter-toolbar select:focus {
+  background-color: #ccc;
+  outline: none;
+}
+
+.items-section__items {
   background: #f5f5f5;
   display: flex;
   flex-wrap: wrap;
