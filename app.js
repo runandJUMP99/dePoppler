@@ -49,6 +49,7 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     socialId: String,
+    groups: [String],
     items: [{
         group: String,
         img: String,
@@ -67,7 +68,15 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
-const User = new mongoose.model("User", userSchema);
+const User = new mongoose.model("User", userSchema);  
+  
+const defaultGroups = [
+    "Tops",
+    "Bottoms",
+    "Shoes",
+    "Accessories",
+    "Other"
+];  
 
 passport.use(User.createStrategy());
 
@@ -119,6 +128,8 @@ passport.authenticate("google", {
 })
 );
 
+let errorMessage = "";
+
 app.get("/", function(req, res) {
     res.render("home");
 });
@@ -129,24 +140,33 @@ app.get("/dashboard", function(req, res) {
             console.log(err);
         } else {
             if (foundUser) {
-                const count = { //count for each item per section
+                if (foundUser.groups.length === 0) {
+                    defaultGroups.forEach(group => {
+                        foundUser.groups.push(group);
+                    });
+                    foundUser.save(() => {
+                        console.log("Added default groups");
+                    });
+                }
+
+                const count = { //COUNT FOR EACH ITEM PER SECTION
                     closet: 0,
                     photod: 0,
                     listed: 0,
                     sold: 0
                 };
-                const totals = { //totals for sold items
+                const totals = { //TOTALS FOR SOLD ITEMS
                     gross: 0,
                     net: 0
                 };
-                const salesByGroup = { //count for each item sold by group
-                    shirts: 0,
-                    pants: 0,
-                    shoes: 0
-                }
+                const salesByGroup = {} //COUNT FOR EACH ITEM SOLD BY GROUP
+
+                foundUser.groups.forEach(group => {
+                    salesByGroup[group] = 0;
+                });
 
                 foundUser.items.forEach(item => {
-                    if (item.status === "closet") { //increase each item by 1 per section
+                    if (item.status === "closet") { //INCREASE EACH ITEM BY ONE PER SECTION
                         count.closet++;
                     } else if (item.status === "photod") {
                         count.photod++;
@@ -155,17 +175,15 @@ app.get("/dashboard", function(req, res) {
                     } else if (item.status === "sold") {
                         count.sold++;
                         
-                        //sum each item for sold items
+                        //SUM EACH ITEM FOR SOLD ITEMS
                         totals.gross += parseFloat(item.price); 
                         totals.net += parseFloat((item.price - item.cost));
 
-                        if (item.group === "Shirts") { //increase each item by 1 per group for sold items
-                            salesByGroup.shirts++;
-                        } else if (item.group === "Pants") {
-                            salesByGroup.pants++;
-                        } else if (item.group === "Shoes") {
-                            salesByGroup.shoes++;
-                        }
+                        foundUser.groups.forEach(group => { //INCREASE EACH ITEM BY ONE PER GROUP FOR SOLD ITEMS
+                            if (item.group === group) {
+                                salesByGroup[group]++;
+                            }
+                        });
                     }
                 });
 
@@ -243,13 +261,14 @@ app.get("/dashboard", function(req, res) {
                 
 
                 const mostSales = Object.keys(salesByGroup).reduce((a, b) => salesByGroup[a] > salesByGroup[b] ? a : b);
-                
-                salesByGroup.shirtsPercentage = Math.floor((salesByGroup.shirts / salesByGroup[mostSales]) * 100);
-                salesByGroup.pantsPercentage = Math.floor((salesByGroup.pants / salesByGroup[mostSales]) * 100);
-                salesByGroup.shoesPercentage = Math.floor((salesByGroup.shoes / salesByGroup[mostSales]) * 100);
 
+                const salesPercentageByGroup = {};
 
-                const data = [foundUser, count, totals, salesByGroup, styles];
+                foundUser.groups.forEach(group => {
+                    salesPercentageByGroup[group] = Math.floor((salesByGroup[group] / salesByGroup[mostSales]) * 100);
+                });
+            
+                const data = [foundUser, count, totals, salesByGroup, salesPercentageByGroup, styles, errorMessage];
 
                 res.render("dashboard", {data: data});
             }
@@ -342,7 +361,7 @@ app.get("/money", function(req, res) {
                         averages[average] = "0.00";
                     }
                 }
-                const data = [totals, nets, averages];
+                const data = [totals, nets, averages, foundUser];
 
                 res.render("money", {data: data});
             }
@@ -355,6 +374,7 @@ app.get("/signup", function(req, res) {
 });
 
 app.get("/:status", function(req, res) {
+    errorMessage = "";
     const status = req.params.status;
     let button1;
     let button2;
@@ -422,7 +442,9 @@ app.get("/:status", function(req, res) {
                     greeting: greeting
                 }
 
-                res.render("status", {foundItems: foundItems});
+                const data = [foundUser, foundItems]
+
+                res.render("status", {data: data});
             }
         }
     });
@@ -442,7 +464,7 @@ app.post("/", function(req, res) {
     const priceCents = parseFloat(req.body.priceCents) / 100;
     const price = (priceDollars + priceCents).toFixed(2);
         
-    if (newItem !== "" && costDollars && costCents && priceDollars && priceCents) {
+    if (newItem !== "" && !isNaN(costDollars) && !isNaN(costCents) && !isNaN(priceDollars) && !isNaN(priceCents)){
         const item = {
             group: group,
             name: newItem,
@@ -466,6 +488,7 @@ app.post("/", function(req, res) {
         });
 
     } else {
+        errorMessage = "Invalid input. Check your values and try again.";
         res.redirect("/dashboard");
     }
 });
@@ -565,12 +588,6 @@ app.listen(port, function() {
     console.log("Server started successfully");
 });
 
-// TOPS
-// BOTTOMS
-// OUTERWEAR
-// SHOES
-// ACCESSORIES
-// DRESSES
-// OTHER
+
 
 // DEPOP SHIPPING VS USPS SHIPPING COSTS

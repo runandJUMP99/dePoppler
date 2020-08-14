@@ -18,39 +18,3 @@
 
 <body>
     <div class="backdrop"></div>
-    <form class="modal__new-item" action="/" method="post">
-        <h1>Enter New Item</h1>
-        <label for="group">Group Name:</label>
-        <select name="group" id="group">
-            <option value="shirts">Shirts</option>
-            <option value="pants">Pants</option>
-            <option value="shoes">Shoes</option>
-            <option value="hats">Hats</option>
-            <option value="other">Other</option>
-        </select>
-        <label>Item Name:</label>
-        <input class="modal__new-item__name" type="text" name="item" placeholder="New Item" autocomplete="off">
-        <div class="price-section">
-            <div class="price-section__money">
-                <label>Item Cost:</label>
-                <div class="price-section__money__inputs">
-                    <span>$</span>
-                    <input type="text" name="costDollars" class="price" placeholder="XX" autocomplete="off">
-                    <span>.</span>
-                    <input type="text" name="costCents" class="price" placeholder="XX" autocomplete="off">
-                </div>
-            </div>
-            <div class="price-section__money">
-                <label>Item Price:</label>
-                <div class="price-section__money__inputs">
-                    <span>$</span>
-                    <input type="text" name="priceDollars" class="price" placeholder="XX" autocomplete="off">
-                    <span>.</span>
-                    <input type="text" name="priceCents" class="price" placeholder="XX" autocomplete="off">
-                </div>
-            </div>
-        </div>
-        <label>Upload Image:</label>
-        <input class="file-upload" type="file"name="file">
-        <button class="add-item-button">Add To Closet</button>
-    </form>

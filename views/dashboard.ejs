@@ -2,34 +2,78 @@
   
 <%- include("partials/sidebar.ejs") %>
 
+<!-- NEW ITEM MODAL -->
+
+    <form class="modal__new-item" action="/" method="post">
+        <h1>Enter New Item</h1>
+        <label for="group">Group Name:</label>
+        <select name="group" id="group">
+
+            <% data[0].groups.forEach(function(group) { %>
+            
+                <option value="<%= group %>"> <%= group %> </option>
+
+            <% }) %>
+
+        </select>
+        <label>Item Name:</label>
+        <input class="modal__new-item__name" type="text" name="item" placeholder="New Item" autocomplete="off">
+        <div class="price-section">
+            <div class="price-section__money">
+                <label>Item Cost:</label>
+                <div class="price-section__money__inputs">
+                    <span>$</span>
+                    <input type="text" name="costDollars" class="price" placeholder="XX" autocomplete="off">
+                    <span>.</span>
+                    <input type="text" name="costCents" class="price" placeholder="XX" autocomplete="off">
+                </div>
+            </div>
+            <div class="price-section__money">
+                <label>Item Price:</label>
+                <div class="price-section__money__inputs">
+                    <span>$</span>
+                    <input type="text" name="priceDollars" class="price" placeholder="XX" autocomplete="off">
+                    <span>.</span>
+                    <input type="text" name="priceCents" class="price" placeholder="XX" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <label>Upload Image:</label>
+        <input class="file-upload" type="file"name="file">
+        <button class="add-item-button">Add To Closet</button>
+    </form>
+
 <div class="display">
 
     <div class="display__welcome">
         <h2>Hello, <%= data[0].name %> </h2>
         <p>Hope all is well.</p>
     </div>
-
+    
+    <p class="error-message"><%= data[6] %></p>
+    
     <div class=display__top>
+
 
         <div class="reports-section">
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Sales: </h6>
-                    <p style="<%= data[4].pointerColorSales %>"><i class="<%= data[4].pointerClassSales %>"></i> <%= data[4].percentageSales %>%</p>
+                    <p style="<%= data[5].pointerColorSales %>"><i class="<%= data[5].pointerClassSales %>"></i> <%= data[5].percentageSales %>%</p>
                 </div>
                 <h4><%= data[1].sold %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Gross: </h6>
-                    <p style="<%= data[4].pointerColorGross %>"><i class="<%= data[4].pointerClassGross %>"></i> <%= data[4].percentageGross %>%</p>
+                    <p style="<%= data[5].pointerColorGross %>"><i class="<%= data[5].pointerClassGross %>"></i> <%= data[5].percentageGross %>%</p>
                 </div>
                 <h4>$<%= data[2].gross %></h4>
             </div>
             <div class="report">
                 <div class="report__left">
                     <h6>This Week's Net: </h6>
-                    <p style="<%= data[4].pointerColorNet %>"><i class="<%= data[4].pointerClassNet %>"></i> <%= data[4].percentageNet %>%</p>
+                    <p style="<%= data[5].pointerColorNet %>"><i class="<%= data[5].pointerClassNet %>"></i> <%= data[5].percentageNet %>%</p>
                 </div>
                 <h4>$<%= data[2].net %></h4>
             </div>
@@ -40,21 +84,27 @@
                 <h3>Sales By Group</h3>
             </div>
             <div id="graph">
-                <div class="graph__bar" style="height: <%= data[3].shirtsPercentage %>%;">
-                    <p> <%= data[3].shirts %> </p>
-                </div>
-                <div class="graph__bar" style="height: <%= data[3].pantsPercentage %>%;">
-                    <p> <%= data[3].pants %> </p>
-                </div>
-                <div class="graph__bar" style="height: <%= data[3].shoesPercentage %>%;">
-                    <p> <%= data[3].shoes %> </p>
-                </div>
+
+                <% data[0].groups.forEach(function(group) { %>
+
+                    <div class="graph__bar" style="height: <%= data[4][group] %>%;">
+                        <p> <%= data[3][group] %> </p>
+                    </div>
+                
+                <% }) %>
+
             </div>
             <div class="groups">
-                <p>Shirts</p>
-                <p>Pants</p>
-                <p>Shoes</p>
+
+                <% data[0].groups.forEach(function(group) { %>
+
+                    <p> <%= group %> </p>
+
+                <% }) %>
+
             </div>
+
+
         </div>
     </div>
 

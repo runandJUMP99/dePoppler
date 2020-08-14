@@ -1,9 +1,9 @@
 // MODALS
 
 
-$(".item").on("click", function() {
-    openItemModal();
-});
+// $(".item").on("click", function() {
+//     openItemModal();
+// });
 
 $(".add-item-button").on("click", function() {
     openItemModal();

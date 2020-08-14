@@ -143,9 +143,6 @@
 }
 
 .reports-section {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: space-between; */
     width: 100%;
 }
 
@@ -226,7 +223,8 @@
 .groups {
     display: flex;
     justify-content: space-around;
-    }
+    margin-top: 1rem;
+}
 
 .groups p {
     margin: 1rem 0.5rem;
@@ -261,6 +259,19 @@
     font-size: 4rem
 }
 
+
+/* ERROR MESSAGE */
+
+
+.error-message {
+    color: red;
+    margin: 1rem 2rem 0;
+}
+
+
+/* MEDIA QUERIES */
+
+
 @media (min-width: 900px) {
     .display {
         margin-left: 20%;
@@ -293,7 +304,7 @@
     }
 }
 
-@media (min-width: 700px)  {
+@media (min-width: 790px)  {
     .display__top {
         flex-direction: row;
         justify-content: space-between;
