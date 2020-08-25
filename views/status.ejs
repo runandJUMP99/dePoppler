@@ -1,10 +1,29 @@
-<%- include('partials/header.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dePoppler</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap-social.css">
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/money.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+    <div class="backdrop"></div>
 
 <%- include("partials/sidebar.ejs") %>
 
 <!-- NEW ITEM MODAL -->
 
-    <form class="modal__new-item" action="/" method="post">
+    <form class="modal__new-item" action="/" method="post" enctype="multipart/form-data">
         <h1>Enter New Item</h1>
         <label for="group">Group Name:</label>
         <select name="group" id="group">
@@ -39,7 +58,7 @@
             </div>
         </div>
         <label>Upload Image:</label>
-        <input class="file-upload" type="file"name="file">
+        <input class="file-upload" type="file" name="image">
         <button class="add-item-button">Add To Closet</button>
     </form>
 
@@ -76,8 +95,7 @@
                         <div class="item__display">
                             <div class="item-img-container">
                                 <input type="hidden" name="selectedImgContainer" value="<%= item.id %>">
-                                <!-- <img src="<%= item.img %>" alt=""> -->
-                                <img src="https://cdn.pixabay.com/photo/2016/03/31/17/17/woman-1293658_960_720.jpg" alt="Item Image">
+                                <img src="data:image/<%= item.img.contentType %>;base64, <%=item.img.data.toString('base64')%>" alt="Item Image">
                             </div>
                             <button class="item__sold" name="moveItem" value="sold">MARK AS SOLD <span>$</span></button>
                         </div>
@@ -119,4 +137,9 @@
                 
     </div>
 
-<%- include('partials/footer.ejs'); %>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="../index.js"></script>
+</body>
+</html>

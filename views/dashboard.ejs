@@ -4,7 +4,7 @@
 
 <!-- NEW ITEM MODAL -->
 
-    <form class="modal__new-item" action="/" method="post">
+    <form class="modal__new-item" action="/" method="post" enctype="multipart/form-data">
         <h1>Enter New Item</h1>
         <label for="group">Group Name:</label>
         <select name="group" id="group">
@@ -39,7 +39,7 @@
             </div>
         </div>
         <label>Upload Image:</label>
-        <input class="file-upload" type="file"name="file">
+        <input class="file-upload" type="file" name="image">
         <button class="add-item-button">Add To Closet</button>
     </form>
 

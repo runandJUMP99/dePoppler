@@ -4,12 +4,25 @@ const bodyParser = require("body-parser");
 const express = require ("express");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
-const fileUpload = require("express-fileupload");
+const fs = require("fs");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
+const multer = require("multer");
 const passport = require("passport");
 const passportLocalMongoose = require ("passport-local-mongoose");
-const session = require("express-session"); 
+const path = require("path"); 
+const session = require("express-session");
+
+const storage = multer.diskStorage({ 
+    destination: (req, file, cb) => { 
+        cb(null, 'uploads') 
+    }, 
+    filename: (req, file, cb) => { 
+        cb(null, file.fieldname + '-' + Date.now()) 
+    } 
+}); 
+  
+const upload = multer({ storage: storage }); 
 
 let callbackURL = "http://localhost:3000/auth/"
 let port = process.env.PORT;
@@ -25,10 +38,7 @@ const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp/"
-}));
+app.use(bodyParser.json());
 
 app.use(session({
     secret: "Our little secret.",
@@ -39,7 +49,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(`mongodb+srv://runandJUMP:${process.env.PASSWORD}@depoppler-xznul.mongodb.net/dePoppler?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
     .then(() => console.log("Connected"))
     .catch(err => console.log("Caught", err.stack));
 mongoose.set("useCreateIndex", true);
@@ -52,11 +62,14 @@ const userSchema = new mongoose.Schema({
     groups: [String],
     items: [{
         group: String,
-        img: String,
         name: String,
         price: Number,
         cost: Number,
-        status: String
+        status: String,
+        img: { 
+            data: Buffer, 
+            contentType: String 
+        } 
     }],
     lastWeeksSales: {
         sales: Number,
@@ -375,20 +388,20 @@ app.get("/signup", function(req, res) {
     res.render("signup");
 });
 
-app.get("/:status", function(req, res) {
+app.get("/statuses/:status", function(req, res) {
     errorMessage = "";
-    status = req.params.status;
 
-    console.log(req.params.status);
-
-    const currentStatus = req.params.status;
+    if (req.params.status !== "index.js") {
+        status = req.params.status;
+    }
+    
     const currentFilterSelection = filterSelection;
     let button1;
     let button2;
     let class1;
     let class2;
     let greeting;
-
+    
     if (status === "closet") {
         button1 = "photod";
         button2 = "listed";
@@ -420,18 +433,22 @@ app.get("/:status", function(req, res) {
                 console.log(err);
             } else {
                 if (foundUser) {
-                    console.log(currentStatus);
                     let foundItems = foundUser.items.filter(item => {
-                        return item.status === currentStatus;
+                        return item.status === status;
                     });
-
-                    console.log(foundItems);
     
                     foundItems = foundItems.map(item=> {
                         let name = item.name;
                         
                         if (name.length > 10) {
                             name = name.substring(0, 10) + " ...";
+                        }
+
+                        if (item.img === undefined) {
+                            item.img = {
+                                data: "",
+                                contentType: ""
+                            };
                         }
     
                         if (item.group === currentFilterSelection) {
@@ -440,14 +457,17 @@ app.get("/:status", function(req, res) {
                                 id: item._id,
                                 group: item.group,
                                 name: name,
-                                cost: item.cost,
                                 price: item.price,
-                                status: item.status
+                                cost: item.cost,
+                                status: item.status,
+                                img: item.img
                             };
                         } else {
                             return;
                         }
                     });
+
+                    console.log(filterSelection, foundItems, "app.js 449");
     
                     foundItems = {
                         foundItems: foundItems,
@@ -471,14 +491,25 @@ app.get("/:status", function(req, res) {
             } else {
                 if (foundUser) {
                     let foundItems = foundUser.items.filter(item => {
-                        return item.status === currentStatus;
+                        return item.status === status;
                     });
     
                     foundItems = foundItems.map(item=> {
                         let name = item.name;
+                        let itemImg = {
+                            data: "",
+                            contentType: ""
+                        };
                         
                         if (name.length > 10) {
                             name = name.substring(0, 10) + " ...";
+                        }
+
+                        if (item.img.data !== undefined) {
+                            itemImg = {
+                                data: item.img.data,
+                                contentType: item.img.contentType
+                            };
                         }
 
                         return {
@@ -487,7 +518,8 @@ app.get("/:status", function(req, res) {
                             name: name,
                             cost: item.cost,
                             price: item.price,
-                            status: item.status
+                            status: item.status,
+                            img: itemImg
                         };
                     });
     
@@ -505,17 +537,18 @@ app.get("/:status", function(req, res) {
                     res.render("status", {data: data});
                 }
             }
+            filterSelection = null;
+
         });
     }
-    filterSelection = null;
-
 });
 
 
 // POSTS
 
 
-app.post("/", function(req, res) {
+app.post("/", upload.single("image"), function(req, res) {
+    console.log(req.file);
     const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
     const costDollars = parseInt(req.body.costDollars);
@@ -524,14 +557,20 @@ app.post("/", function(req, res) {
     const priceDollars = parseInt(req.body.priceDollars);
     const priceCents = parseFloat(req.body.priceCents) / 100;
     const price = (priceDollars + priceCents).toFixed(2);
+    const img = {
+        data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)),
+        contentType: "image/png"
+    };
+    console.log(img);
         
-    if (newItem !== "" && !isNaN(costDollars) && !isNaN(costCents) && !isNaN(priceDollars) && !isNaN(priceCents)){
+    if (newItem !== "" && !isNaN(costDollars) && !isNaN(costCents) && !isNaN(priceDollars) && !isNaN(priceCents)) {
         const item = {
             group: group,
             name: newItem,
             cost: cost,
             price: price,
             status: "closet",
+            img: img
         };
         
         User.findById(req.user.id, function(err, foundUser) {
@@ -542,7 +581,7 @@ app.post("/", function(req, res) {
                 if (foundUser) {
                     foundUser.items.push(item);
                     foundUser.save(() => {
-                        res.redirect("/closet");
+                        res.redirect("/statuses/closet");
                     });
                 }
             }
@@ -583,9 +622,9 @@ app.post("/change", function(req, res) {
 app.post("/filter", function(req, res) {
     filterSelection = req.body.filterSelection;
 
-    console.log(status);
+    console.log(status, "app.js 586");
 
-    res.redirect(status);
+    res.redirect("statuses/" + status);
 });
 
 app.post("/login", function(req, res) {
@@ -619,34 +658,6 @@ app.post("/signup", function(req, res) {
             });
         }
     });
-});
-
-app.post("/upload", function(req, res) {
-    const file = req.files.file;
-    const uploadPath = __dirname + "/public/uploads/" + file.name;
-    const itemSelected = req.body.itemSelected;
-
-    file.mv(uploadPath, function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("File uploaded to" + uploadPath);
-        }
-    });
-
-    User.updateOne(
-        {_id: req.user.id,
-        "items._id": itemSelected}, 
-        {$set: {"items.$.img": "../uploads/" + file.name}}, 
-        function(err) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("updated img");
-            }
-    }); 
-
-    res.redirect("/closet");
 });
 
 

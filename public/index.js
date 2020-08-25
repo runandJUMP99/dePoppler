@@ -1,12 +1,10 @@
 // MODALS
 
 
-// $(".item").on("click", function() {
-//     openItemModal();
-// });
-
 $(".add-item-button").on("click", function() {
-    openItemModal();
+    $(".backdrop").addClass("open");
+    $(".backdrop").addClass("modal__backdrop");
+    $(".modal__new-item").addClass("modal__open");
 });
 
 $(".backdrop").on("click", function() {
@@ -20,12 +18,6 @@ $(".backdrop").on("click", function() {
     $(".sidebar__link").removeClass("text-align-left");
     $(".add-item-button").removeClass("text-align-left");
 });
-
-function openItemModal() {
-    $(".backdrop").addClass("open");
-    $(".backdrop").addClass("modal__backdrop");
-    $(".modal__new-item").addClass("modal__open");
-}
 
 
 //SIDEBAR
@@ -53,3 +45,25 @@ $(".expand").on("click", function() {
         }, 500);
     }
 });
+
+
+//IMAGE UPLOAD PREVIEW
+
+
+// let imagesPreview = function(input, placeToInsertImagePreview) {
+//     if (input.files) {
+//     let filesAmount = input.files.length;
+//     for (i = 0; i < filesAmount; i++) {
+//         let reader = new FileReader();
+//         reader.onload = function(event) {
+//         $($.parseHTML("<img>"))
+//             .attr("src", event.target.result)
+//             .appendTo(placeToInsertImagePreview);
+//         };
+//         reader.readAsDataURL(input.files[i]);
+//     }
+//     }
+// };
+// $("#input-files").on("change", function() {
+//     imagesPreview(this, "div.preview-images");
+// });
