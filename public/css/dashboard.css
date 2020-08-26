@@ -227,7 +227,7 @@
 }
 
 .groups p {
-    margin: 1rem 0.5rem;
+    margin: 1rem 0;
     transform: rotate(-70deg);
 }
 

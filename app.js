@@ -81,15 +81,7 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
-const User = new mongoose.model("User", userSchema);  
-  
-const defaultGroups = [
-    "Tops",
-    "Bottoms",
-    "Shoes",
-    "Accessories",
-    "Other"
-];  
+const User = new mongoose.model("User", userSchema);    
 
 passport.use(User.createStrategy());
 
@@ -113,7 +105,7 @@ function(accessToken, refreshToken, profile, done) {
         if (err) {
             return done(err);
         }
-
+        
         done(null, user);
     });
 }
@@ -135,12 +127,19 @@ passport.authenticate("google", {scope: ["profile"]})
 );
 
 app.get("/auth/google/home",
-passport.authenticate("google", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/login"
-})
+    passport.authenticate("google", {
+        successRedirect: "/dashboard",
+        failureRedirect: "/login"
+    })
 );
 
+const defaultGroups = [
+    "Tops",
+    "Bottoms",
+    "Shoes",
+    "Accessories",
+    "Other"
+];  
 let errorMessage = "";
 let filterSelection = null;
 let status = null;
@@ -216,8 +215,6 @@ app.get("/dashboard", function(req, res) {
 
 
                 //SETTING POINTER COLOR, DIRECTION AND VALUE
-
-
                 let pointerClassGross;
                 let pointerColorGross;
                 let percentageGross;
@@ -273,8 +270,6 @@ app.get("/dashboard", function(req, res) {
 
 
                 //SETTING GRAPH BAR HEIGHTS
-                
-
                 const mostSales = Object.keys(salesByGroup).reduce((a, b) => salesByGroup[a] > salesByGroup[b] ? a : b);
 
                 const salesPercentageByGroup = {};
@@ -306,61 +301,41 @@ app.get("/money", function(req, res) {
             console.log(err);
         } else {
             if (foundUser) {
-                const totals = {
-                    shirts: 0,
-                    pants: 0,
-                    shoes: 0,
-                    other: 0
-                };
-                const cost = {
-                    shirts: 0,
-                    pants: 0,
-                    shoes: 0,
-                    other: 0
-                };
-                const count = {
-                    shirts: 0,
-                    pants: 0,
-                    shoes: 0,
-                    other: 0
-                };
+                const averages = {};
+                const cost = {};
+                const count = {};
+                const nets = {};
+                const totals = {};
 
+                foundUser.groups.forEach(group => {
+                    averages[group] = 0;
+                    cost[group] = 0;
+                    count[group] = 0;
+                    nets[group] = 0;
+                    totals[group] = 0;
+                });
+                
                 foundUser.items.forEach(item => {
                     if (item.status === "sold") {  
-                        if (item.group === "Shirts") {
-                            totals.shirts += item.price;
-                            cost.shirts += item.cost;
-                            count.shirts++;
-                        } else if (item.group === "Pants") {
-                            totals.pants += item.price;
-                            cost.pants += item.cost;
-                            count.pants++;
-                        } else if (item.group === "Shoes") {
-                            totals.shoes += item.price;
-                            cost.shoes += item.cost;
-                            count.shoes++;
-                        } else if (item.group === "Other") {
-                            totals.other += item.price;
-                            cost.other += item.cost;
-                            count.other++;
-                        }
+                        foundUser.groups.forEach(group => {
+                            if (item.group === group) {
+                                cost[group] += item.cost;
+                                count[group]++;
+                                nets[group] += item.price - item.cost;
+                                totals[group] += item.price;
+                            }
+                        });
                     }
                 });
 
-                const nets = {
-                    shirts: totals.shirts - cost.shirts,
-                    pants: totals.pants - cost.pants,
-                    shoes: totals.shoes - cost.shoes,
-                    other: totals.other - cost.other
-                };
-
-                const averages = {
-                    shirts: totals.shirts / count.shirts,
-                    pants: totals.pants / count.pants,
-                    shoes: totals.shoes / count.shoes,
-                    other: totals.other / count.other
-                };
-
+                for (const key in averages) {
+                    if (count[key] !== 0) {
+                        averages[key] = (totals[key] / count[key]).toFixed(2);
+                    } else {
+                        averages[key] = "0.00"
+                    }
+                }
+                
                 for (const total in totals) {
                     totals[total] = totals[total].toFixed(2);
                 }
@@ -368,15 +343,8 @@ app.get("/money", function(req, res) {
                 for (const net in nets) {
                     nets[net] = nets[net].toFixed(2);
                 }
-                
-                for (const average in averages) {
-                    if (averages[average]) {
-                        averages[average] = averages[average].toFixed(2);
-                    } else {
-                        averages[average] = "0.00";
-                    }
-                }
-                const data = [totals, nets, averages, foundUser];
+
+                const data = [totals, nets, averages, foundUser, count];
 
                 res.render("money", {data: data});
             }
@@ -391,9 +359,7 @@ app.get("/signup", function(req, res) {
 app.get("/statuses/:status", function(req, res) {
     errorMessage = "";
 
-    if (req.params.status !== "index.js") {
-        status = req.params.status;
-    }
+    status = req.params.status;
     
     const currentFilterSelection = filterSelection;
     let button1;
@@ -428,7 +394,9 @@ app.get("/statuses/:status", function(req, res) {
     }
 
     if (currentFilterSelection) {
+        console.log(currentFilterSelection);
         User.findById(req.user.id, function(err, foundUser) {
+            console.log(currentFilterSelection);
             if (err) {
                 console.log(err);
             } else {
@@ -494,7 +462,7 @@ app.get("/statuses/:status", function(req, res) {
                         return item.status === status;
                     });
     
-                    foundItems = foundItems.map(item=> {
+                    foundItems = foundItems.map(item => {
                         let name = item.name;
                         let itemImg = {
                             data: "",
@@ -532,7 +500,7 @@ app.get("/statuses/:status", function(req, res) {
                         greeting: greeting
                     }
     
-                    const data = [foundUser, foundItems]
+                    const data = [foundUser, foundItems];
     
                     res.render("status", {data: data});
                 }
@@ -548,7 +516,6 @@ app.get("/statuses/:status", function(req, res) {
 
 
 app.post("/", upload.single("image"), function(req, res) {
-    console.log(req.file);
     const group = _.capitalize(req.body.group);
     const newItem = req.body.item;
     const costDollars = parseInt(req.body.costDollars);
@@ -557,11 +524,15 @@ app.post("/", upload.single("image"), function(req, res) {
     const priceDollars = parseInt(req.body.priceDollars);
     const priceCents = parseFloat(req.body.priceCents) / 100;
     const price = (priceDollars + priceCents).toFixed(2);
-    const img = {
-        data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)),
-        contentType: "image/png"
-    };
-    console.log(img);
+    let img = null;
+
+    if (req.file !== undefined) {
+        img = {
+            data: fs.readFileSync(path.join(__dirname + "/uploads/" + req.file.filename)),
+            contentType: "image/png"
+        };
+    }
+    
         
     if (newItem !== "" && !isNaN(costDollars) && !isNaN(costCents) && !isNaN(priceDollars) && !isNaN(priceCents)) {
         const item = {
@@ -658,7 +629,7 @@ app.post("/signup", function(req, res) {
             });
         }
     });
-});
+}); 
 
 
 // LISTEN

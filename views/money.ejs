@@ -4,7 +4,7 @@
 
 <!-- NEW ITEM MODAL -->
 
-    <form class="modal__new-item" action="/" method="post">
+    <form class="modal__new-item" action="/" method="post" enctype="multipart/form-data">
         <h1>Enter New Item</h1>
         <label for="group">Group Name:</label>
         <select name="group" id="group">
@@ -17,29 +17,29 @@
 
         </select>
         <label>Item Name:</label>
-        <input class="modal__new-item__name" type="text" name="item" placeholder="New Item" autocomplete="off">
+        <input class="modal__new-item__name" type="text" name="item" placeholder="New Item" autocomplete="off" required>
         <div class="price-section">
             <div class="price-section__money">
                 <label>Item Cost:</label>
                 <div class="price-section__money__inputs">
                     <span>$</span>
-                    <input type="text" name="costDollars" class="price" placeholder="XX" autocomplete="off">
+                    <input type="text" name="costDollars" class="price" placeholder="XX" autocomplete="off" required>
                     <span>.</span>
-                    <input type="text" name="costCents" class="price" placeholder="XX" autocomplete="off">
+                    <input type="text" name="costCents" class="price" placeholder="XX" autocomplete="off" required>
                 </div>
             </div>
             <div class="price-section__money">
                 <label>Item Price:</label>
                 <div class="price-section__money__inputs">
                     <span>$</span>
-                    <input type="text" name="priceDollars" class="price" placeholder="XX" autocomplete="off">
+                    <input type="text" name="priceDollars" class="price" placeholder="XX" autocomplete="off" required>
                     <span>.</span>
-                    <input type="text" name="priceCents" class="price" placeholder="XX" autocomplete="off">
+                    <input type="text" name="priceCents" class="price" placeholder="XX" autocomplete="off" required>
                 </div>
             </div>
         </div>
         <label>Upload Image:</label>
-        <input class="file-upload" type="file"name="file">
+        <input class="file-upload" type="file" name="image">
         <button class="add-item-button">Add To Closet</button>
     </form>
 
@@ -50,59 +50,67 @@
         </div>
 
         <div class="money-reports">
+
+            <div class="money-report">
+                <h4>Sales By Group (Totals):</h4>
+                <div class="money-report__reports">
+                    
+                    <% data[3].groups.forEach(group => { %>
+    
+                        <div>        
+                            <h6><%= group %>: </h6><p><%= data[4][group] %></p>
+                        </div>
+    
+                    <% }) %>
+    
+                </div>
+            </div>
+
             <div class="money-report">
                 <h4>Sales By Group (Gross):</h4>
                 <div class="money-report__reports">
-                    <div>        
-                        <h6>Shirts: </h6><p>$<%= data[0].shirts %></p>
-                    </div>
-                    <div>
-                        <h6>Pants: </h6><p>$<%= data[0].pants %></p>
-                    </div>
-                    <div>
-                        <h6>Shoes: </h6><p>$<%= data[0].shoes %></p>
-                    </div>
-                    <div>
-                        <h6>Other: </h6><p>$<%= data[0].other %></p>
-                    </div>
+
+                    <% data[3].groups.forEach(group => { %>
+
+                        <div>        
+                            <h6><%= group %>: </h6><p>$<%= data[0][group] %></p>
+                        </div>
+
+                    <% }) %>
+
                 </div>
             </div>
             
             <div class="money-report">
                 <h4>Sales By Group (Net):</h4>
                 <div class="money-report__reports">
-                    <div>        
-                        <h6>Shirts: </h6><p>$<%= data[1].shirts %></p>
-                    </div>
-                    <div>
-                        <h6>Pants: </h6><p>$<%= data[1].pants %></p>
-                    </div>
-                    <div>
-                        <h6>Shoes: </h6><p>$<%= data[1].shoes %></p>
-                    </div>
-                    <div>
-                        <h6>Other: </h6><p>$<%= data[1].other %></p>
-                    </div>
+                    
+                    <% data[3].groups.forEach(group => { %>
+
+                        <div>        
+                            <h6><%= group %>: </h6><p>$<%= data[1][group] %></p>
+                        </div>
+
+                    <% }) %>
+
                 </div>
             </div>
         
             <div class="money-report">
                 <h4>Average Price By Group:</h4>
                 <div class="money-report__reports">
-                    <div>        
-                        <h6>Shirts: </h6><p>$<%= data[2].shirts %></p>
-                    </div>
-                    <div>
-                        <h6>Pants: </h6><p>$<%= data[2].pants %></p>
-                    </div>
-                    <div>
-                        <h6>Shoes: </h6><p>$<%= data[2].shoes %></p>
-                    </div>
-                    <div>
-                        <h6>Other: </h6><p>$<%= data[2].other %></p>
-                    </div>
+                    
+                    <% data[3].groups.forEach(group => { %>
+
+                        <div>        
+                            <h6><%= group %>: </h6><p>$<%= data[2][group] %></p>
+                        </div>
+
+                    <% }) %>
+
                 </div>
             </div>
+
         </div>
     </div>
     
